@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniFlash - Arcade Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-yellow: #ffde03;
+            --brand-pink: #ff00ff;
+            --brand-cyan: #00ffff;
+            --dark-border: 3px solid black;
+            --hard-shadow: 6px 6px 0px black;
+        }
+
+        /* === BACKGROUND === */
+        body {
+            font-family: 'Comic Neue', sans-serif;
+            background-color: #fdfbf7; 
+            background-image: linear-gradient(#00000008 2px, transparent 2px),
+                              linear-gradient(90deg, #00000008 2px, transparent 2px);
+            background-size: 40px 40px;
+            color: black;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* === LOGO MODIFICATIONS === */
+        header {
+            margin-top: 20px;
+            text-align: center;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .main-logo {
+            font-family: 'Bungee', cursive;
+            font-size: 4rem;
+            color: white; /* Default FLASH color */
+            text-shadow: 4px 4px 0px black;
+            -webkit-text-stroke: 2px black;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            cursor: default;
+        }
+
+        /* SIRF MINI KO YELLOW KARNE KE LIYE */
+        .main-logo span {
+            color: var(--brand-yellow);
+        }
+
+        /* Glitch Animation */
+        .main-logo:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* === INFO BUTTON (TOP RIGHT CORNER) === */
+        .info-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: var(--dark-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bungee', cursive;
+            font-size: 1.5rem;
+            color: black;
+            box-shadow: var(--hard-shadow);
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .info-btn:hover {
+            background: var(--brand-cyan);
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px black;
+        }
+
+        .info-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px black;
+        }
+
+        /* === MODAL / POPUP STYLE === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-box {
+            background: white;
+            border: var(--dark-border);
+            box-shadow: 10px 10px 0px black;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.open .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-box h2 {
+            font-family: 'Bungee', cursive;
+            margin-top: 0;
+            font-size: 2rem;
+            color: var(--brand-pink);
+            -webkit-text-stroke: 1.5px black;
+            text-shadow: 3px 3px 0px black;
+        }
+
+        .creator-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+            background: var(--brand-yellow);
+            border: 2px solid black;
+            display: inline-block;
+            padding: 5px 15px;
+            transform: rotate(-2deg);
+            box-shadow: 4px 4px 0px black;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .contact-btn {
+            display: block;
+            text-decoration: none;
+            padding: 12px;
+            font-weight: bold;
+            border: 2px solid black;
+            color: black;
+            background: #eee;
+            box-shadow: 4px 4px 0px black;
+            transition: all 0.2s;
+        }
+
+        .contact-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px black;
+        }
+
+        .contact-btn.insta { background: #ffdcff; }
+        .contact-btn.email { background: #dcffff; }
+
+        .close-modal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: red;
+            color: white;
+            border: 3px solid black;
+            font-family: 'Bungee', cursive;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 3px 3px 0px black;
+        }
+        .close-modal:hover { transform: scale(1.1); }
+
+        /* === CONTAINER === */
+        .container {
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-grow: 1; 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-bottom: 80px;
+        }
+        .container.results-active {
+            flex-grow: 0;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+        .search-wrapper { position: relative; width: 100%; }
+
+        /* === INPUT === */
+        input {
+            width: 100%;
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            font-family: 'Comic Neue', cursive;
+            font-weight: 700;
+            border: var(--dark-border);
+            border-radius: 50px;
+            outline: none;
+            box-shadow: var(--hard-shadow);
+            transition: all 0.2s;
+            background: white;
+            text-align: center;
+        }
+        input:focus {
+            transform: translateY(4px);
+            box-shadow: 2px 2px 0px black;
+            background-color: var(--brand-yellow);
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        /* === RESULTS === */
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            margin-top: 0;
+        }
+        .container.results-active .results {
+            margin-top: 40px;
+            opacity: 1;
+            height: auto;
+            overflow: visible;
+        }
+
+        /* === GAME CARDS === */
+        .game-card {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: var(--dark-border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: black;
+            transition: all 0.2s ease;
+            box-shadow: var(--hard-shadow);
+            position: relative;
+            overflow: hidden;
+            transform: rotate(0deg);
+        }
+        .game-card:hover { z-index: 10; background-color: #fff9db; }
+        .game-card:hover:nth-child(odd) { transform: translateY(-5px) rotate(-2deg); box-shadow: 8px 8px 0px black; }
+        .game-card:hover:nth-child(even) { transform: translateY(-5px) rotate(2deg); box-shadow: 8px 8px 0px black; }
+
+        .game-logo {
+            width: 110px;
+            height: 110px;
+            background: #eee;
+            border-right: var(--dark-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .game-logo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .game-card:hover .game-logo img { transform: scale(1.1); }
+
+        .game-info { padding: 15px 25px; flex-grow: 1; }
+        .game-info h3 { margin: 0; font-family: 'Bungee', cursive; font-size: 1.6rem; color: black; line-height: 1.2; }
+        .game-info p { margin: 8px 0 0; font-size: 1.1rem; color: #333; font-weight: bold; }
+
+        ::-webkit-scrollbar { width: 15px; }
+        ::-webkit-scrollbar-track { background: white; border-left: 3px solid black; }
+        ::-webkit-scrollbar-thumb { background: var(--brand-yellow); border: 3px solid black; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-pink); }
+        .no-results-msg {
+            font-family: 'Bungee', cursive;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 20px;
+            background: var(--brand-pink);
+            color: white;
+            border: var(--dark-border);
+            box-shadow: var(--hard-shadow);
+            transform: rotate(-1deg);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INFO BUTTON (Corner) -->
+    <button class="info-btn" id="infoBtn">i</button>
+
+    <!-- CREDITS MODAL -->
+    <div class="modal-overlay" id="creditModal">
+        <div class="modal-box">
+            <button class="close-modal" id="closeModal">X</button>
+            <h2>CREDITS</h2>
+            <p>DESIGNED & BUILT BY</p>
+            <div class="creator-name">Elia Haider</div>
+            
+            <div class="contact-links">
+                <a href="mailto:haiderhashmi11220@gmail.com" class="contact-btn email">
+                    📧 haiderhashmi11220@gmail.com
+                </a>
+                <a href="https://www.instagram.com/d_testing_" target="_blank" class="contact-btn insta">
+                    📸 @d_testing_
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <!-- SPAN tag added for MINI color change -->
+        <div class="main-logo"><span>MINI</span>FLASH</div>
+    </header>
+
+    <div class="container" id="main-container">
+        <div class="search-wrapper">
+            <input type="text" id="search-input" placeholder="PRESS ENTER TO SEARCH..." autocomplete="off">
+        </div>
+        
+        <div id="results-list" class="results"></div>
+    </div>
+
+    <script>
+        const gameData = [
+            { id: 1, title: "Flash Fingers", description: "Test your typing speed in this retro challenge.", path: "FlashFingers/index.html", image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=500" },
+            { id: 2, title: "Brain Fry", description: "High speed quiz. Think fast or get fried!", path: "BrainFry/index.html", image: "https://images.unsplash.com/photo-1616336531478-f3d79f040683?w=500" }
+        ];
+
+        const fuse = new Fuse(gameData, {
+            keys: ["title", "description"],
+            threshold: 0.4
+        });
+
+        const searchInput = document.getElementById('search-input');
+        const resultsList = document.getElementById('results-list');
+        const container = document.getElementById('main-container');
+
+        // === SEARCH LOGIC ===
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value;
+                if (query.trim() === "") {
+                    resultsList.innerHTML = "";
+                    container.classList.remove('results-active');
+                    return;
+                }
+
+                const results = fuse.search(query).map(r => r.item);
+                container.classList.add('results-active');
+                
+                resultsList.innerHTML = results.map(game => `
+                    <a href="${game.path}" class="game-card">
+                        <div class="game-logo">
+                            ${game.image ? `<img src="${game.image}" alt="${game.title}">` : game.title[0]}
+                        </div>
+                        <div class="game-info">
+                            <h3>${game.title}</h3>
+                            <p>${game.description}</p>
+                        </div>
+                    </a>
+                `).join('');
+
+                if (results.length === 0) {
+                    resultsList.innerHTML = '<div class="no-results-msg">👾 NO GAMES FOUND!</div>';
+                }
+            }
+        });
+
+        searchInput.addEventListener('focus', () => { searchInput.style.textAlign = "left"; });
+        searchInput.addEventListener('blur', () => { if(searchInput.value === "") searchInput.style.textAlign = "center"; });
+        searchInput.addEventListener('input', (e) => {
+            if (e.target.value.trim() === "") {
+                resultsList.innerHTML = "";
+                container.classList.remove('results-active');
+            }
+        });
+
+        // === MODAL LOGIC (New) ===
+        const infoBtn = document.getElementById('infoBtn');
+        const modal = document.getElementById('creditModal');
+        const closeBtn = document.getElementById('closeModal');
+
+        infoBtn.addEventListener('click', () => {
+            modal.classList.add('open');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('open');
+        });
+
+        // Close when clicking outside box
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
