@@ -380,16 +380,29 @@
                 id: 1, 
                 title: "Flash Fingers", 
                 description: "Test your typing speed in this retro challenge.", 
-                path: "FlashFingers/index.html", 
-                image: "FlashFingers/THM.jpg" 
+                // Path uses lowercase folder name and trailing slash
+                path: "flashfingers/", 
+                // Image path uses lowercase folder name and original uppercase THM.jpg
+                image: "flashfingers/THM.jpg" 
             },
             { 
                 id: 2, 
                 title: "Brain Fry", 
                 description: "High speed quiz. Think fast or get fried!", 
-                path: "BrainFry/index.html", 
-                image: "BrainFry/THM.jpg" 
+                // Path uses lowercase folder name and trailing slash
+                path: "brainfry/", 
+                // Image path uses lowercase folder name and original uppercase THM.jpg
+                image: "brainfry/THM.jpg" 
             }
+            // Agar aur games hain aur unke folders ko bhi lowercase kiya hai to unhe bhi yahan add kar do
+            // For example:
+            // { 
+            //     id: 3, 
+            //     title: "Pixel Jump", 
+            //     description: "Jump through the pixelated obstacles!", 
+            //     path: "pixeljump/", 
+            //     image: "pixeljump/THM.jpg" 
+            // }
         ];
 
         const fuse = new Fuse(gameData, {
