@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Fingers - Typing Game</title>
+    
+    <link rel="icon" href="logo/LOGO.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- NEW: Chart.js Library Added -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QW635JBDRH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QW635JBDRH');
+    </script>
+</head>
+<body>
+    <div id="mobileMenuBtn">☰</div>
+    <div id="mobileMenu">
+        <span id="mobileSoundIcon">🔊</span>
+        <span id="mobileResetIcon">⚙️</span>
+        <span id="mobileAboutIcon">ℹ️</span>
+        <span id="mobileHomeIcon">🏠</span>
+    </div>
+    <div id="desktopIcons">
+        <span id="soundIcon">🔊</span>
+        <span id="resetIcon">⚙️</span>
+        <span id="aboutIcon">ℹ️</span>
+    </div>
+    <span id="homeIcon">🏠</span>
+    <img src="logo/LOGO.png" alt="Flash Fingers Logo" id="gameLogo">
+    <h1>Flash Fingers - Typing Game</h1>
+    <button id="startButton">Start</button>
+    <button id="optionsBtn">Options ⚙️</button>
+    <div id="statusIndicator">0.00</div>
+    <div id="gameContainer">
+        <div id="display"></div>
+        <div id="tooltip" class="tooltip"></div>
+        <span id="restartIconTop" class="restart-same-icon-top" title="Restart with same sentence">🔄</span>
+        <textarea id="typingBox" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+    </div>
+
+    <!-- NEW: Live WPM Graph Container -->
+    <div id="graphContainer" class="graph-container">
+        <canvas id="liveWpmChart"></canvas>
+    </div>
+
+    <div id="stats"></div>
+    <button id="showHighScoreBtn">High Score 🏆</button>
+    <div id="message"></div>
+    <div id="resultButtons">
+        <button id="downloadResultBtn">Full Result 📥</button>
+        <button id="restartButton">Restart</button>
+    </div>
+    
+    <!-- MODALS SECTION -->
+    <div id="resultModal" class="modal">
+        <span class="modal-close" id="resultModalClose">✖</span>
+        <div class="modal-scroll-content">
+            <div class="modal-header">🏆 Your Full Typing Result</div>
+            <pre id="resultText">Loading...</pre>
+
+            <!-- NEW: Final WPM Graph Container in Result -->
+            <div id="finalGraphContainer" class="graph-container">
+                <canvas id="finalWpmChart"></canvas>
+            </div>
+
+            <button class="download-btn" id="modalDownloadBtn">💾 Download Result</button>
+            <button class="share-btn" id="shareResultBtn">🔗 Share Result</button>
+        </div>
+        <span id="watchAdAgainBtn" title="Watch Ad Again">📺</span>
+    </div>
+
+    <div id="toast">Result copied to clipboard! ✅</div>
+    
+    <div id="highScoreModal" class="modal">
+        <span id="highScoreModalClose" class="modal-close">✖</span>
+        <div class="modal-header">🏆 High Scores</div>
+        <div id="highScoreList"></div>
+    </div>
+
+    <div id="scoreInfoModal" class="modal small-modal">
+        <span id="scoreInfoModalClose" class="modal-close">✖</span>
+        <div class="modal-header">Score Details</div>
+        <div id="scoreInfoContent"></div>
+    </div>
+
+    <div id="soundModal" class="modal">
+        <span id="soundModalClose" class="modal-close">✖</span>
+        <div class="modal-header">Sound Settings</div>
+        <div class="modal-buttons">
+            <button id="soundOnButton" class="modal-button">ON</button>
+            <button id="soundOffButton" class="modal-button">OFF</button>
+        </div>
+    </div>
+    
+    <div id="settingsModal" class="modal">
+        <span id="settingsModalClose" class="modal-close">✖</span>
+        <div class="modal-header">Settings</div>
+        <div class="options-section">
+            <h3 class="options-title">Guide (Hints for wrong case)</h3>
+            <div class="modal-buttons">
+                <button id="guideOnBtn" class="modal-button">ON</button>
+                <button id="guideOffBtn" class="modal-button">OFF</button>
+            </div>
+        </div>
+        <div class="options-section">
+            <h3 class="options-title">Manage Data</h3>
+            <div class="modal-buttons">
+                <button id="resetScoresBtn" class="modal-button danger-btn">Reset High Scores...</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="resetScoresModal" class="modal">
+        <span id="resetScoresModalClose" class="modal-close">✖</span>
+        <div class="modal-header">Reset Individual High Scores</div>
+        <div id="resetScoreList"></div>
+    </div>
+    
+    <div id="optionsModal" class="modal">
+        <span id="optionsModalClose" class="modal-close">✖</span>
+        <div class="modal-header">Game Options</div>
+        <div class="options-section">
+            <h3 class="options-title">Game Mode</h3>
+            <div class="modal-buttons">
+                <button id="normalModeBtn" class="modal-button mode-btn">Normal</button>
+                <button id="timeModeBtn" class="modal-button mode-btn">Time Attack</button>
+            </div>
+        </div>
+        <div id="difficultySection" class="options-section">
+            <h3 class="options-title">Difficulty</h3>
+            <div class="modal-buttons">
+                <button id="easyBtn" class="modal-button difficulty-btn">Easy</button>
+                <button id="mediumBtn" class="modal-button difficulty-btn">Medium</button>
+                <button id="hardBtn" class="modal-button difficulty-btn">Hard</button>
+            </div>
+        </div>
+        <div id="timeOptionsSection" class="options-section" style="display: none;">
+            <h3 class="options-title">Time Limit</h3>
+            <div class="modal-buttons">
+                <button id="time30Btn" class="modal-button time-btn">30s</button>
+                <button id="time60Btn" class="modal-button time-btn">60s</button>
+                <button id="time120Btn" class="modal-button time-btn">120s</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="aboutModal" class="modal">
+        <span id="aboutModalClose" class="modal-close">✖</span>
+        <div class="modal-header interactive-header" id="howToPlayHeader">How to Play</div>
+        <div class="modal-header interactive-header" id="aboutGameHeader">About Game</div>
+        <div class="modal-header interactive-header" id="aboutCreatorHeader">About Creator</div>
+        <div class="modal-header interactive-header" id="contactHeader">Contact Info</div>
+        
+        <!-- UPDATED "How to Play" section -->
+        <div id="howToPlayContent" class="modal-content active">
+            <p>
+                1. Press the <strong>'Start'</strong> button or hit <strong>'Enter'</strong> to begin the game.<br>
+                2. You can choose between 2 different Game Modes in <strong>Options ⚙️</strong>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• <strong>Normal Mode:</strong> Type a single sentence and focus on your accuracy and final time.<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• <strong>Time Attack Mode:</strong> Race against the clock and see how much you can type within the given time limit.<br>
+                3. The timer starts as soon as you type the first character.<br>
+                4. Track your speed in real-time with the <strong>Live WPM Graph</strong> below the typing area.<br>
+                5. After the game, you'll get a detailed result, including a full graph of your performance.<br>
+                6. After a 3-second delay, you can start the next round by clicking the <strong>'Restart'</strong> button or pressing the <strong>'Enter'</strong> key.
+            </p>
+        </div>
+
+        <div id="aboutGameContent" class="modal-content"><p>This game helps improve typing speed and accuracy with random sentences, WPM tracking, and a sleek design.</p></div>
+        <div id="aboutCreatorContent" class="modal-content"><p>Developed by Elia Haider from Baltistan, Pakistan.</p></div>
+        <div id="contactContent" class="modal-content"><p>Email: <a href="mailto:haiderhashmi1120@gmail.com">haiderhashmi1120@gmail.com</a><br>YouTube: <a href="https://www.youtube.com/channel/UCAaSY7QKjtxdsIphuZEcO-g" target="_blank">Elia Haider's Channel</a></p></div>
+    </div>
+    
+    <div id="adModal">
+        <span id="adTimer">3</span>
+        <button id="skipAdBtn">Skip</button>
+        <a id="adContent" href="#" target="_blank"><img src="https://via.placeholder.com/800x400.png?text=Your+Ad+Here" alt="Advertisement"></a>
+    </div>
+
+    <!-- AUDIO FILES -->
+    <audio id="buttonSound" src="sounds/button.mp3"></audio>
+    <audio id="wrongSound" src="sounds/wong.mp3"></audio>
+    <audio id="highScoreSound" src="sounds/high score.mp3"></audio>
+    <audio id="bg1Sound" src="sounds/bg1.mp3" loop></audio>
+    <audio id="bg2Sound" src="sounds/bg2.mp3" loop></audio>
+    <audio id="typeSound" src="sounds/type.mp3"></audio>
+    <audio id="enterSound" src="sounds/enter.mp3"></audio>
+    <audio id="startSound" src="sounds/start.mp3"></audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>
