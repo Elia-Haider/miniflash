@@ -477,9 +477,10 @@
 
     <script>
         const games = [
-            { title: "Flash Fingers", desc: "Test your typing speed in this retro challenge.", img: "FlashFingers/THM.jpg", url: "FlashFingers/index.html" },
-            { title: "Brain Fry", desc: "High speed quiz. Think fast or get fried!", img: "BrainFry/THM.jpg", url: "BrainFry/index.html" },
-            { title: "Pixel Jump", desc: "Jump through the pixelated obstacles!", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800", url: "PixelJump/index.html" }
+            // Folder names are now lowercase, but THM.jpg remains uppercase as per your instruction
+            { title: "Flash Fingers", desc: "Test your typing speed in this retro challenge.", img: "flashfingers/THM.jpg", url: "flashfingers/" },
+            { title: "Brain Fry", desc: "High speed quiz. Think fast or get fried!", img: "brainfry/THM.jpg", url: "brainfry/" },
+            { title: "Pixel Jump", desc: "Jump through the pixelated obstacles!", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800", url: "pixeljump/" } // Assuming PixelJump folder is also lowercase now
         ];
 
         const resultsList = document.getElementById('results-list');
