@@ -24,7 +24,7 @@
             background-size: 20px 20px;
             color: white;
             font-family: 'Comic Neue', cursive;
-            overflow: hidden;
+            /* overflow-x: hidden; */ /* X-axis overflow hidden rakho */
             height: 100vh;
             display: flex;
             align-items: center;
@@ -82,11 +82,32 @@
             transform: rotate(-15deg);
             animation: logoWobble 3s ease-in-out infinite;
             pointer-events: none;
-            /* Stroke aur shadow dono add kar diye gaye hain */
             filter: drop-shadow(6px 6px 0px black) drop-shadow(-2px -2px 0 black) drop-shadow(2px -2px 0 black) drop-shadow(-2px 2px 0 black) drop-shadow(2px 2px 0 black);
+            transition: all 0.3s ease-out; /* Add transition for animation */
         }
         #game-logo-overlay.hidden {
             display: none;
+        }
+        /* Naya Yellow Dot */
+        #logo-placeholder {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            width: 30px;
+            height: 30px;
+            background: var(--comic-yellow);
+            border-radius: 50%;
+            border: 3px solid black;
+            z-index: 1001;
+            cursor: pointer;
+            display: none; /* By default hidden */
+            transition: transform 0.1s ease-out;
+        }
+        #logo-placeholder.active {
+            display: block;
+        }
+        #logo-placeholder:active {
+            transform: scale(0.9);
         }
         @keyframes logoWobble {
             0%, 100% {
@@ -171,6 +192,8 @@
             box-shadow: 10px 10px 0px black;
             padding: 2rem;
             color: black;
+            max-height: 90vh; /* Max height for modal */
+            overflow-y: auto; /* Scroll for modal content */
         }
         .modal.active {
             display: flex;
@@ -263,6 +286,9 @@
             max-width: 500px;
             padding: 2.5rem;
             animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 95vh; /* Max height for screens */
+            overflow-y: auto; /* Scroll for screen content */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
         .screen.active {
             display: flex;
@@ -365,6 +391,13 @@
             .comic-title {
                 font-size: 2.5rem;
             }
+            /* Ensure screens can scroll on small devices */
+            .screen {
+                padding: 1.5rem; /* Adjust padding for smaller screens */
+            }
+            .modal {
+                padding: 1.5rem;
+            }
         }
         /* ================================ */
     </style>
@@ -372,6 +405,8 @@
 <body>
 
     <img src="assets/images/logo.png" id="game-logo-overlay" class="hidden">
+    <!-- Naya Yellow Dot -->
+    <div id="logo-placeholder" onclick="toggleLogo()"></div>
 
     <!-- Splash Screen -->
     <div id="splash-screen" onclick="skipSplash()">
@@ -522,6 +557,7 @@
         
         let musicEnabled = true;
         let soundFXEnabled = true;
+        let logoTimer = null; // New timer for logo visibility
 
         const insults = [
             { text: "Beta, ludo khelo tum!", sound: "insult_1" },
@@ -583,6 +619,8 @@
 
         window.onload = () => {
             playerName = localStorage.getItem('brainfry-playername');
+            // Ensure logo placeholder is hidden on initial load
+            document.getElementById('logo-placeholder').classList.remove('active');
         };
 
         function skipSplash() {
@@ -610,14 +648,20 @@
             const homeBtn = document.getElementById('global-home-button');
             const settingsBtn = document.getElementById('global-settings-button');
             const infoBtn = document.getElementById('global-info-button');
-            const logo = document.getElementById('game-logo-overlay');
+            const gameLogo = document.getElementById('game-logo-overlay');
+            const logoPlaceholder = document.getElementById('logo-placeholder');
             
             const isNameScreen = id === 'screen-name';
+            const isGameOrOverScreen = id === 'screen-game' || id === 'screen-over';
+
             homeBtn.classList.toggle('hidden', isNameScreen);
             settingsBtn.classList.toggle('hidden', isNameScreen);
             infoBtn.classList.toggle('hidden', isNameScreen);
-            logo.classList.toggle('hidden', isNameScreen);
-
+            
+            // Logo visibility logic
+            gameLogo.classList.toggle('hidden', isGameOrOverScreen || isNameScreen);
+            logoPlaceholder.classList.toggle('active', isGameOrOverScreen); // Show dot for game/over screens
+            
             if (id === 'screen-menu') {
                 homeBtn.classList.add('hidden');
             }
@@ -628,6 +672,29 @@
             
             playSound('screen_transition');
         }
+
+        // New function for logo toggle
+        function toggleLogo() {
+            const gameLogo = document.getElementById('game-logo-overlay');
+            const logoPlaceholder = document.getElementById('logo-placeholder');
+
+            // Clear any existing timer
+            if (logoTimer) {
+                clearTimeout(logoTimer);
+                logoTimer = null;
+            }
+
+            // Show logo and hide placeholder
+            gameLogo.classList.remove('hidden');
+            logoPlaceholder.classList.remove('active');
+
+            // Set a timer to hide logo and show placeholder after 1 second
+            logoTimer = setTimeout(() => {
+                gameLogo.classList.add('hidden');
+                logoPlaceholder.classList.add('active');
+            }, 1000);
+        }
+
 
         // --- MODAL FUNCTIONS (Settings & Info) ---
         function toggleSettings(show) {
@@ -686,6 +753,7 @@
                 localStorage.setItem('brainfry-highscore', 0);
                 document.getElementById('high-score-display').innerText = 0;
                 alert("High Score saaf ho gaya!");
+                playSound('reset');
             }
         }
 
@@ -697,19 +765,21 @@
                 document.getElementById('name-input-group').classList.remove('visible');
                 showScreen('screen-name');
                 setTimeout(() => document.getElementById('name-input-group').classList.add('visible'), 100);
+                playSound('reset');
             }
         }
 
         function shareScore() {
             const highScore = localStorage.getItem('brainfry-highscore') || 0;
-            const text = `Bhai mere Brain-Fry me ${highScore} score hain! Himmat hai to thora muqabla kar lo: ${window.location.href}`;
+            const text = `Brain-Fry me mera score ${highScore} hai! Tumhara kitna hai? ${window.location.href}`; // Shortened Roman Urdu message
             if (navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent)) {
                 navigator.share({ title: 'Brain-Fry Challenge', text: text, url: window.location.href }).catch(console.error);
             } else {
                 navigator.clipboard.writeText(text).then(() => {
-                    alert("Challenge clipboard me copy ho gaya hai! Ab ye apne dost ko bhejo!");
-                }).catch(err => alert("Copy failed! Manual copy kar lo bhai."));
+                    alert("Challenge copy ho gaya! Dost ko bhej do.");
+                }).catch(err => alert("Copy nahi ho paya. Khud copy kar lo bhai."));
             }
+            playSound('share');
         }
 
         function submitName() {
