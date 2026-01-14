@@ -30,7 +30,7 @@
     ------------------------------------------------------------------ */
     const allAds = [];
     if (useAdSense) {
-        allAds.push({ type: 'adsense' });
+        allAds.push({ type: 'adsense', title: 'Google AdSense' });
     }
     // Sirf tabhi direct ads add karein jab switch ON ho
     if (useDirectAds) {
@@ -49,6 +49,13 @@
                 if (gameUrl && !card.dataset.listenerAttached) {
                     card.dataset.listenerAttached = 'true';
                     card.addEventListener('click', () => {
+                        // Analytics Event for starting a game without an ad
+                        if (typeof gtag === 'function') {
+                            gtag('event', 'select_content', {
+                                content_type: 'game',
+                                item_id: card.dataset.title || 'unknown_game'
+                            });
+                        }
                         window.location.href = gameUrl;
                     });
                 }
@@ -63,6 +70,7 @@
     const adContent = document.getElementById('adContent');
     const skipAdBtn = document.getElementById('skipAdBtn');
     let gameUrlToOpen = null;
+    let gameTitleToOpen = null;
 
     function getNextAd() {
         let seenAdIndices = JSON.parse(sessionStorage.getItem('seenAdIndices') || '[]');
@@ -75,12 +83,25 @@
         return nextAd;
     }
 
-    function showAd(destinationUrl) {
+    function showAd(destinationUrl, gameTitle) {
         gameUrlToOpen = destinationUrl;
+        gameTitleToOpen = gameTitle;
         const ad = getNextAd();
         adContent.innerHTML = '';
+        
+        // Analytics Event for viewing an Ad
+        if (typeof gtag === 'function') {
+            gtag('event', 'view_promotion', {
+                promotion_id: ad.title.replace(/\s+/g, '_').toLowerCase(),
+                promotion_name: ad.title,
+                creative_slot: 'interstitial'
+            });
+        }
+
         if (ad.type === 'direct') {
-            adContent.innerHTML = `<a href="${ad.link}" target="_blank"><img src="${ad.image}" alt="${ad.title}" style="display:block;width:100%;"></a>`;
+            // Added analytics event on ad click
+            const adClickHandler = `if(typeof gtag === 'function'){ gtag('event', 'select_promotion', { promotion_id: '${ad.title.replace(/\s+/g, '_').toLowerCase()}', promotion_name: '${ad.title}' }); }`;
+            adContent.innerHTML = `<a href="${ad.link}" target="_blank" onclick="${adClickHandler}"><img src="${ad.image}" alt="${ad.title}" style="display:block;width:100%;"></a>`;
         } else {
             adContent.innerHTML = adSenseLogic();
         }
@@ -103,8 +124,23 @@
     }
 
     skipAdBtn.onclick = () => {
+        // Analytics Event for skipping an Ad
+        if (typeof gtag === 'function') {
+            gtag('event', 'skip_ad', {
+                game_title: gameTitleToOpen || 'unknown_game'
+            });
+        }
         adModal.classList.remove('open');
-        if (gameUrlToOpen) window.location.href = gameUrlToOpen;
+        if (gameUrlToOpen) {
+            // Analytics Event for starting a game after an ad
+             if (typeof gtag === 'function') {
+                gtag('event', 'select_content', {
+                    content_type: 'game',
+                    item_id: gameTitleToOpen || 'unknown_game'
+                });
+            }
+            window.location.href = gameUrlToOpen;
+        }
     };
     
     function addAdBadges() {
@@ -121,11 +157,12 @@
     function attachAdListeners() {
         document.querySelectorAll('.game-card').forEach(card => {
             const gameUrl = card.dataset.url;
+            const gameTitle = card.dataset.title;
             if (gameUrl && !card.dataset.listenerAttached) {
                 card.dataset.listenerAttached = 'true';
                 card.addEventListener('click', e => {
                     e.preventDefault();
-                    showAd(gameUrl);
+                    showAd(gameUrl, gameTitle);
                 });
             }
         });
