@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiniFlash - Game Hub</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/logo.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,436 +20,197 @@
             --hard-shadow: 8px 8px 0px black;
         }
 
-        /* --- NEW: DISABLE SELECTION GLOBALLY --- */
-        * {
-            -webkit-user-select: none; /* Safari/Chrome */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE/Edge */
-            user-select: none;         /* Standard */
-            -webkit-tap-highlight-color: transparent; /* Mobile tap highlight removed */
-        }
-
-        /* Allow typing in inputs */
-        input, textarea {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
-        }
-
-        /* Prevent image dragging */
-        img {
-            -webkit-user-drag: none;
-            user-drag: none;
-        }
-        /* --------------------------------------- */
+        * { -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+        input, textarea { -webkit-user-select: text; user-select: text; }
+        img { -webkit-user-drag: none; user-drag: none; }
 
         body {
             font-family: 'Comic Neue', sans-serif;
-            background-color: #fdfbf7; /* Fallback color */
-            
-            /* Layering: New image is the first layer, then the two gradients */
+            background-color: #fdfbf7;
             background-image: url('images/background.jpg'), 
                               linear-gradient(#00000008 2px, transparent 2px),
                               linear-gradient(90deg, #00000008 2px, transparent 2px);
-
-            /* Properties for each layer, in order */
             background-repeat: no-repeat, repeat, repeat;
             background-position: center center, 0 0, 0 0;
             background-size: cover, 40px 40px, 40px 40px;
-            background-attachment: fixed, scroll, scroll; /* Image fixed, grid scrolls */
-
-            color: black;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
+            background-attachment: fixed, scroll, scroll;
+            color: black; margin: 0; display: flex; flex-direction: column;
+            align-items: center; min-height: 100vh; padding: 20px; overflow-x: hidden;
+        }
+        
+        .container {
+            flex-grow: 1; /* Ensures container pushes footer down */
+            width: 95%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; margin-bottom: 80px;
         }
 
         .corner-logo {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            width: 80px;
-            height: auto;
+            position: fixed; top: 20px; left: 20px; z-index: 1000;
+            cursor: pointer; width: 80px; height: auto;
             filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2));
             transition: transform 0.2s, opacity 0.3s ease-out;
         }
+        .corner-logo.hidden { opacity: 0; pointer-events: none; }
+        .corner-logo:hover { transform: scale(1.1) rotate(-3deg); }
 
-        .corner-logo.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .corner-logo:hover {
-            transform: scale(1.1) rotate(-3deg);
-        }
-
-        @media (max-width: 768px) {
-            .corner-logo {
-                width: 60px;
-                top: 15px;
-                left: 15px;
-            }
-        }
-
-        header {
-            margin-top: 20px;
-            text-align: center;
-            z-index: 2;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+        header { margin-top: 20px; text-align: center; z-index: 2; margin-bottom: 20px; width: 100%; }
 
         .main-logo {
-            font-family: 'Bungee', cursive;
-            font-size: 5rem;
-            color: white;
-            text-shadow: 6px 6px 0px black;
-            -webkit-text-stroke: 2px black;
-            letter-spacing: 4px;
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
+            font-family: 'Bungee', cursive; font-size: 5rem; color: white;
+            text-shadow: 6px 6px 0px black; -webkit-text-stroke: 2px black;
+            letter-spacing: 4px; position: relative; display: inline-block; cursor: pointer;
         }
-
-        @media (max-width: 768px) {
-            .main-logo { 
-                font-size: 2.5rem; 
-                letter-spacing: 2px; 
-                margin-top: 60px;
-            }
-        }
-
         .main-logo span { color: var(--brand-yellow); }
+        .main-logo:hover, .main-logo.animating { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite, blink-colors 0.5s infinite; }
 
-        /* Animation triggers on Hover (PC) OR when class 'animating' is added (Mobile) */
-        .main-logo:hover, 
-        .main-logo.animating {
-            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite, blink-colors 0.5s infinite;
-        }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+        @keyframes blink-colors { 0%, 100% { color: white; } 25% { color: var(--brand-yellow); } 50% { color: var(--brand-pink); } 75% { color: var(--brand-cyan); } }
 
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        @keyframes blink-colors {
-            0%, 100% { color: white; }
-            25% { color: var(--brand-yellow); }
-            50% { color: var(--brand-pink); }
-            75% { color: var(--brand-cyan); }
-        }
-
-        .top-controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-            transition: opacity 0.3s ease-out;
-        }
-
-        .top-controls.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .top-controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 100; transition: opacity 0.3s ease-out; }
+        .top-controls.hidden { opacity: 0; pointer-events: none; }
 
         .icon-btn {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border: var(--dark-border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Comic Neue', sans-serif;
-            font-weight: bold;
-            font-size: 2rem;
-            color: black;
-            box-shadow: var(--hard-shadow);
-            cursor: pointer;
-            transition: all 0.1s;
+            width: 60px; height: 60px; background: white; border: var(--dark-border);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-family: 'Comic Neue', sans-serif; font-weight: bold; font-size: 2rem;
+            color: black; box-shadow: var(--hard-shadow); cursor: pointer; transition: all 0.1s;
         }
-
-        @media (max-width: 768px) {
-            .icon-btn { width: 45px; height: 45px; box-shadow: 4px 4px 0px black; font-size: 1.5rem; }
-        }
-
-        #searchBtn { display: none; }
-        @media (max-width: 768px) {
-            #searchBtn { display: flex; }
-        }
-
-        .icon-btn:hover {
-            background: var(--brand-cyan);
-            transform: translate(-3px, -3px);
-            box-shadow: 12px 12px 0px black;
-        }
-
-        #searchBtn { background: var(--brand-yellow); }
+        #searchBtn { display: none; background: var(--brand-yellow); }
+        .icon-btn:hover { background: var(--brand-cyan); transform: translate(-3px, -3px); box-shadow: 12px 12px 0px black; }
         #searchBtn.active { background: #ff0000; color: white; }
 
-        .game-card:hover .game-thumbnail img {
-            transform: scale(1.1) rotate(2deg);
-        }
-
-        .game-card:hover h3 {
-            transform: scale(1.05);
-            transition: transform 0.3s;
-        }
-
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 999;
         }
-
         .modal-overlay.open { display: flex; }
 
         .modal-box {
-            background: white;
-            border: var(--dark-border);
-            box-shadow: 15px 15px 0px black;
-            padding: 40px;
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            position: relative;
+            background: white; border: var(--dark-border); box-shadow: 15px 15px 0px black;
+            padding: 40px; width: 90%; max-width: 550px; text-align: center; position: relative;
         }
-
         .modal-box h2 {
-            font-family: 'Bungee', cursive;
-            margin-top: 0;
-            font-size: 2.5rem;
-            color: var(--brand-pink);
-            -webkit-text-stroke: 2px black;
-            text-shadow: 4px 4px 0px black;
+            font-family: 'Bungee', cursive; margin-top: 0; font-size: 2.5rem;
+            color: var(--brand-pink); -webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px black;
         }
-
+        .modal-box p { font-size: 1.1rem; line-height: 1.6; }
+        
         .creator-name {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 15px 0;
-            background: var(--brand-yellow);
-            border: 3px solid black;
-            display: inline-block;
-            padding: 10px 20px;
-            transform: rotate(-3deg);
-            box-shadow: 6px 6px 0px black;
+            font-size: 2rem; font-weight: bold; margin: 15px 0; background: var(--brand-yellow);
+            border: 3px solid black; display: inline-block; padding: 10px 20px;
+            transform: rotate(-3deg); box-shadow: 6px 6px 0px black;
         }
-
         .close-modal {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 50px;
-            height: 50px;
-            background: #ff0000;
-            color: white;
-            border: 4px solid black;
-            font-family: 'Bungee', cursive;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 4px 4px 0px black;
+            position: absolute; top: -20px; right: -20px; width: 50px; height: 50px;
+            background: #ff0000; color: white; border: 4px solid black;
+            font-family: 'Bungee', cursive; font-size: 1.5rem; cursor: pointer; box-shadow: 4px 4px 0px black;
         }
 
         .copy-toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--brand-cyan);
-            color: black;
-            border: var(--dark-border);
-            padding: 15px 30px;
-            font-family: 'Bungee', cursive;
-            font-size: 1.2rem;
-            box-shadow: var(--hard-shadow);
-            z-index: 2000;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: var(--brand-cyan); color: black; border: var(--dark-border); padding: 15px 30px;
+            font-family: 'Bungee', cursive; font-size: 1.2rem; box-shadow: var(--hard-shadow);
+            z-index: 2000; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
-
-        .copy-toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .container {
-            width: 95%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 80px;
-        }
-
-        .search-wrapper {
-            width: 100%;
-            max-width: 700px;
-            margin-bottom: 60px;
-            transition: all 0.3s;
-        }
-
-        @media (max-width: 768px) {
-            .search-wrapper {
-                position: relative; 
-                display: none;
-                margin-top: 10px;
-                margin-bottom: 30px;
-                padding: 0 10px;
-            }
-            
-            .search-wrapper.visible { 
-                display: block; 
-                animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            }
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
+        .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        .search-wrapper { width: 100%; max-width: 700px; margin-bottom: 60px; transition: all 0.3s; }
         input {
+            width: 100%; padding: 25px 40px; font-size: 1.8rem; font-family: 'Comic Neue', cursive;
+            font-weight: 700; border: var(--dark-border); border-radius: 60px; outline: none;
+            box-shadow: var(--hard-shadow); transition: all 0.2s; background: white;
+            text-align: center; box-sizing: border-box;
+        }
+        input:focus { transform: translateY(4px); box-shadow: 3px 3px 0px black; background-color: var(--brand-yellow); text-align: left; padding-left: 40px; }
+
+        .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; }
+
+        .game-card {
+            display: flex; flex-direction: column; background: white; border: var(--dark-border);
+            border-radius: 20px; text-decoration: none; color: black;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--hard-shadow); position: relative; overflow: hidden; height: 100%; cursor: pointer;
+        }
+        
+        /* --- NEW: HIDE CARDS FOR SEARCH OPTIMIZATION --- */
+        .game-card.hidden {
+            display: none;
+        }
+        
+        .game-card:hover { transform: translateY(-10px) rotate(2deg); box-shadow: 12px 12px 0px black; background-color: #fff9db; }
+        .game-thumbnail { width: 100%; aspect-ratio: 16 / 9; background: #eee; border-bottom: var(--dark-border); overflow: hidden; position: relative; }
+        .game-card:hover .game-thumbnail img { transform: scale(1.1) rotate(2deg); }
+        .ad_warn {
+            position: absolute; top: 15px; right: 15px; background-color: var(--brand-pink);
+            color: white; font-family: 'Bungee', cursive; font-size: 0.8rem; padding: 5px 10px;
+            border-radius: 20px; border: 3px solid black; box-shadow: 3px 3px 0px black; z-index: 10;
+        }
+        .game-thumbnail img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .game-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; text-align: center; }
+        .game-info h3 { margin: 0; font-family: 'Bungee', cursive; font-size: 1.8rem; color: black; line-height: 1.2; -webkit-text-stroke: 1px black; }
+        .game-info p { margin: 15px 0 0; font-size: 1.2rem; color: #444; font-weight: bold; line-height: 1.4; }
+        .no-results-msg {
+            grid-column: 1 / -1; font-family: 'Bungee', cursive; font-size: 2rem;
+            text-align: center; padding: 40px; background: var(--brand-pink);
+            color: white; border: var(--dark-border); box-shadow: var(--hard-shadow);
+            transform: rotate(-1deg); display: none;
+        }
+        
+        #adModal .modal-box { max-width: 800px; padding: 10px; background: #111; }
+        #adContent { min-height: auto; display: flex; align-items: center; justify-content: center; flex-direction: column; background: #000; border: none; margin-bottom: 15px; }
+        #adContent img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+        #skipAdBtn {
+            font-family: 'Bungee', cursive; background: var(--brand-yellow); border: var(--dark-border);
+            padding: 15px 30px; font-size: 1.5rem; cursor: pointer; box-shadow: var(--hard-shadow); transition: all 0.2s;
+        }
+        #skipAdBtn:hover { background: var(--brand-pink); color: white; transform: translateY(-3px); box-shadow: 10px 10px 0px black; }
+        #skipAdBtn:disabled { background: #999; color: #ccc; cursor: not-allowed; transform: none; box-shadow: var(--hard-shadow); }
+
+        /* --- NEW: MINIMALIST FOOTER MENU --- */
+        .site-footer {
             width: 100%;
-            padding: 25px 40px;
-            font-size: 1.8rem;
-            font-family: 'Comic Neue', cursive;
-            font-weight: 700;
-            border: var(--dark-border);
-            border-radius: 60px;
-            outline: none;
-            box-shadow: var(--hard-shadow);
-            transition: all 0.2s;
-            background: white;
+            padding: 20px 0;
+            margin-top: 40px;
             text-align: center;
-            box-sizing: border-box;
+            border-top: var(--dark-border);
+            background-color: #ffffff99;
         }
-
-        @media (max-width: 768px) {
-            input { font-size: 1.2rem; padding: 15px 25px; }
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
         }
-
-        input:focus {
-            transform: translateY(4px);
-            box-shadow: 3px 3px 0px black;
-            background-color: var(--brand-yellow);
-            text-align: left;
-            padding-left: 40px;
+        .footer-nav a {
+            font-family: 'Bungee', cursive;
+            color: black;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s, transform 0.2s;
         }
-
-        .results {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            width: 100%;
+        .footer-nav a:hover {
+            color: var(--brand-pink);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 1024px) { .results { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { .results { grid-template-columns: 1fr; } }
-
-        .game-card {
-            display: flex;
-            flex-direction: column;
-            background: white;
-            border: var(--dark-border);
-            border-radius: 20px;
-            text-decoration: none;
-            color: black;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: var(--hard-shadow);
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px) rotate(2deg);
-            box-shadow: 12px 12px 0px black;
-            background-color: #fff9db;
-        }
-
-        .game-thumbnail {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: #eee;
-            border-bottom: var(--dark-border);
-            overflow: hidden;
-        }
-
-        .game-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .game-info {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            text-align: center;
-        }
-
-        .game-info h3 {
-            margin: 0;
-            font-family: 'Bungee', cursive;
-            font-size: 1.8rem;
-            color: black;
-            line-height: 1.2;
-            -webkit-text-stroke: 1px black;
-        }
-
-        .game-info p {
-            margin: 15px 0 0;
-            font-size: 1.2rem;
-            color: #444;
-            font-weight: bold;
-            line-height: 1.4;
-        }
-
-        .no-results-msg {
-            grid-column: 1 / -1;
-            font-family: 'Bungee', cursive;
-            font-size: 2rem;
-            text-align: center;
-            padding: 40px;
-            background: var(--brand-pink);
-            color: white;
-            border: var(--dark-border);
-            box-shadow: var(--hard-shadow);
-            transform: rotate(-1deg);
-            display: none;
+        @media (max-width: 768px) {
+            .results { grid-template-columns: 1fr; }
+            .main-logo { font-size: 2.5rem; letter-spacing: 2px; margin-top: 60px; }
+            .corner-logo { width: 60px; top: 15px; left: 15px; }
+            .icon-btn { width: 45px; height: 45px; box-shadow: 4px 4px 0px black; font-size: 1.5rem; }
+            #searchBtn { display: flex; }
+            .search-wrapper { position: relative; display: none; margin-top: 10px; margin-bottom: 30px; padding: 0 10px; }
+            .search-wrapper.visible { display: block; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+            @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+            input { font-size: 1.2rem; padding: 15px 25px; }
         }
     </style>
 </head>
 <body>
 
     <img src="images/logo.png" alt="MiniFlash Logo" class="corner-logo" id="cornerLogo">
-
     <div class="top-controls" id="topControls">
         <button class="icon-btn" id="searchBtn">🔍</button>
         <button class="icon-btn" id="infoBtn">i</button>
@@ -458,10 +218,11 @@
 
     <div id="copyToast" class="copy-toast">✅ EMAIL COPIED!</div>
 
+    <!-- Credit / About Modal -->
     <div class="modal-overlay" id="creditModal">
         <div class="modal-box">
-            <button class="close-modal" id="closeModal">X</button>
-            <h2 id="modalTitle">ABOUT</h2>
+            <button class="close-modal" id="closeCreditModal">X</button>
+            <h2 id="modalTitle">ABOUT / CONTACT</h2>
             <p>DESIGNED & BUILT BY</p>
             <div class="creator-name">Elia Haider</div>
             <div class="contact-links" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
@@ -470,6 +231,30 @@
             </div>
         </div>
     </div>
+    
+    <!-- NEW: Privacy Policy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-box">
+            <button class="close-modal" id="closePrivacyModal">X</button>
+            <h2>PRIVACY POLICY</h2>
+            <p style="text-align: left;">
+                Welcome to MiniFlash! Your privacy is important to us.
+                <br><br>
+                <strong>Advertisements:</strong> We display direct advertisements from our partners and may use third-party ad networks. These services help keep our games free to play.
+                <br><br>
+                <strong>Cookies & Storage:</strong> To improve your experience, we use your browser's local/session storage. This is primarily to manage our ad rotation system, ensuring you don't see the same ad repeatedly during a single session. We do not store any personal identification information.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Ad Modal -->
+    <div class="modal-overlay" id="adModal">
+        <div class="modal-box">
+            <div id="adContent"></div>
+            <button id="skipAdBtn">Skip Ad & Play</button>
+        </div>
+    </div>
+
 
     <header>
         <div class="main-logo" id="mainLogo"><span>MINI</span>FLASH</div>
@@ -479,168 +264,117 @@
         <div class="search-wrapper" id="searchWrapper">
             <input type="text" id="search-input" placeholder="SEARCH GAMES..." autocomplete="off">
         </div>
-
         <div id="results-list" class="results"></div>
         <div id="no-results" class="no-results-msg">NO GAMES FOUND!</div>
     </div>
 
+    <!-- NEW: Footer Menu -->
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="#">Home</a>
+            <a href="#" id="footerAboutBtn">About Us</a>
+            <a href="#" id="footerPrivacyBtn">Privacy Policy</a>
+            <a href="#" id="footerContactBtn">Contact</a>
+        </nav>
+    </footer>
+
+    <script src="ads.js"></script> 
+
     <script>
         const games = [
-            // Folder names are now lowercase, but THM.jpg remains uppercase as per your instruction
             { title: "Flash Fingers", desc: "Test your typing speed in this retro challenge.", img: "flashfingers/THM.jpg", url: "flashfingers/" },
             { title: "Brain Fry", desc: "High speed quiz. Think fast or get fried!", img: "brainfry/THM.jpg", url: "brainfry/" },
-            { title: "Pixel Jump", desc: "Jump through the pixelated obstacles!", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800", url: "pixeljump/" } // Assuming PixelJump folder is also lowercase now
+            { title: "Pixel Jump", desc: "Jump through the pixelated obstacles!", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800", url: "pixeljump/" }
+            // Add 12+ more games here and the code will handle it perfectly
         ];
 
         const resultsList = document.getElementById('results-list');
         const searchInput = document.getElementById('search-input');
         const noResults = document.getElementById('no-results');
-        const searchBtn = document.getElementById('searchBtn');
-        const searchWrapper = document.getElementById('searchWrapper');
-        const topControls = document.getElementById('topControls');
 
-        function levenshtein(a, b) {
-            if (a.length === 0) return b.length;
-            if (b.length === 0) return a.length;
+        /**
+         * OPTIMIZED: Creates all game cards once on page load.
+         */
+        function renderAllGamesOnce() {
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = "game-card";
+                card.dataset.url = game.url;
+                // Store title and desc for efficient searching later
+                card.dataset.title = game.title.toLowerCase();
+                card.dataset.desc = game.desc.toLowerCase();
+                
+                card.innerHTML = `
+                    <div class="game-thumbnail"><img src="${game.img}" alt="${game.title}"></div>
+                    <div class="game-info"><h3>${game.title}</h3><p>${game.desc}</p></div>
+                `;
+                resultsList.appendChild(card);
+            });
+            // Inform the ad system that cards are ready
+            document.dispatchEvent(new CustomEvent('gamesRendered'));
+        }
 
-            const matrix = [];
-            for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-            for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+        /**
+         * OPTIMIZED: Filters games by showing/hiding existing cards instead of rebuilding the DOM.
+         */
+        function filterGames(searchTerm) {
+            const search = searchTerm.toLowerCase().trim();
+            const allCards = resultsList.getElementsByClassName('game-card');
+            let visibleCount = 0;
 
-            for (let i = 1; i <= b.length; i++) {
-                for (let j = 1; j <= a.length; j++) {
-                    if (b.charAt(i - 1) == a.charAt(j - 1)) {
-                        matrix[i][j] = matrix[i - 1][j - 1];
-                    } else {
-                        matrix[i][j] = Math.min(
-                            matrix[i - 1][j - 1] + 1,
-                            matrix[i][j - 1] + 1,
-                            matrix[i - 1][j] + 1
-                        );
-                    }
+            for (const card of allCards) {
+                const title = card.dataset.title;
+                const desc = card.dataset.desc;
+
+                if (title.includes(search) || desc.includes(search)) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
                 }
             }
-            return matrix[b.length][a.length];
+
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
         }
+        
+        // Initial setup
+        renderAllGamesOnce();
+        searchInput.addEventListener('input', (e) => filterGames(e.target.value));
 
-        searchBtn.onclick = () => {
-            searchWrapper.classList.toggle('visible');
-            searchBtn.classList.toggle('active');
-            if (searchWrapper.classList.contains('visible')) {
-                searchBtn.innerHTML = 'X';
-                searchInput.focus();
-            } else {
-                searchBtn.innerHTML = '🔍';
-            }
-        };
+        // Modal and UI Control Listeners
+        const creditModal = document.getElementById('creditModal');
+        const privacyModal = document.getElementById('privacyModal');
+        
+        document.getElementById('infoBtn').onclick = () => creditModal.classList.add('open');
+        document.getElementById('closeCreditModal').onclick = () => creditModal.classList.remove('open');
+        document.getElementById('closePrivacyModal').onclick = () => privacyModal.classList.remove('open');
+        
+        // Footer navigation listeners
+        document.getElementById('footerAboutBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
+        document.getElementById('footerPrivacyBtn').onclick = (e) => { e.preventDefault(); privacyModal.classList.add('open'); };
+        document.getElementById('footerContactBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
 
-        function displayGames(filter = "") {
-            resultsList.innerHTML = "";
-            const searchTerm = filter.toLowerCase().trim();
-
-            const filtered = games.filter(g => {
-                if (searchTerm === "") return true;
-                const title = g.title.toLowerCase();
-                const desc = g.desc.toLowerCase();
-                if (title.includes(searchTerm) || desc.includes(searchTerm)) return true;
-                
-                const words = title.split(" ");
-                const allowedMistakes = searchTerm.length > 4 ? 3 : 2;
-                return words.some(word => levenshtein(searchTerm, word) <= allowedMistakes);
-            });
-
-            if (filtered.length === 0) {
-                noResults.style.display = "block";
-            } else {
-                noResults.style.display = "none";
-                filtered.forEach(game => {
-                    const card = document.createElement('a');
-                    card.className = "game-card";
-                    card.href = game.url;
-                    card.innerHTML = `
-                        <div class="game-thumbnail"><img src="${game.img}"></div>
-                        <div class="game-info">
-                            <h3>${game.title}</h3>
-                            <p>${game.desc}</p>
-                        </div>
-                    `;
-                    resultsList.appendChild(card);
-                });
-            }
-        }
-
-        searchInput.addEventListener('input', (e) => displayGames(e.target.value));
-        document.getElementById('infoBtn').onclick = () => document.getElementById('creditModal').classList.add('open');
-        document.getElementById('closeModal').onclick = () => document.getElementById('creditModal').classList.remove('open');
-        displayGames();
+        const searchBtn = document.getElementById('searchBtn');
+        const searchWrapper = document.getElementById('searchWrapper');
+        searchBtn.onclick = () => { searchWrapper.classList.toggle('visible'); searchBtn.classList.toggle('active'); if (searchWrapper.classList.contains('visible')) { searchBtn.innerHTML = 'X'; searchInput.focus(); } else { searchBtn.innerHTML = '🔍'; } };
 
         let lastScrollY = window.scrollY;
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.scrollY;
-            
-            if (currentScroll > lastScrollY && currentScroll > 100) { 
-                topControls.classList.add('hidden');
-                cornerLogo.classList.add('hidden');
-            } else { 
-                topControls.classList.remove('hidden');
-                cornerLogo.classList.remove('hidden');
-            }
-            
-            lastScrollY = currentScroll;
-        });
+        const topControls = document.getElementById('topControls');
+        const cornerLogo = document.getElementById('cornerLogo');
+        window.addEventListener('scroll', () => { const currentScroll = window.scrollY; if (currentScroll > lastScrollY && currentScroll > 100) { topControls.classList.add('hidden'); cornerLogo.classList.add('hidden'); } else { topControls.classList.remove('hidden'); cornerLogo.classList.remove('hidden'); } lastScrollY = currentScroll; });
 
         const emailLink = document.getElementById('emailLink');
         const copyToast = document.getElementById('copyToast');
+        emailLink.addEventListener('click', function(e) { if (window.innerWidth > 768) { e.preventDefault(); navigator.clipboard.writeText("haiderhashmi11220@gmail.com").then(() => { copyToast.classList.add('show'); setTimeout(() => { copyToast.classList.remove('show'); }, 2000); }); } });
 
-        emailLink.addEventListener('click', function(e) {
-            if (window.innerWidth > 768) {
-                e.preventDefault();
-                const email = "haiderhashmi11220@gmail.com";
-                navigator.clipboard.writeText(email).then(() => {
-                    copyToast.classList.add('show');
-                    setTimeout(() => { copyToast.classList.remove('show'); }, 2000);
-                });
-            }
-        });
-
-        // --- UPDATED LOGO ANIMATION LOGIC ---
         const mainLogo = document.getElementById('mainLogo');
+        document.addEventListener('click', (event) => { if (mainLogo.contains(event.target)) { mainLogo.classList.add('animating'); } else { mainLogo.classList.remove('animating'); } });
+        mainLogo.addEventListener('mouseleave', () => { mainLogo.classList.remove('animating'); });
 
-        // Logic 1: Handle Clicks (For Mobile mostly)
-        // If clicked on Logo -> Add class (Start animation)
-        // If clicked elsewhere -> Remove class (Stop animation)
-        document.addEventListener('click', (event) => {
-            if (mainLogo.contains(event.target)) {
-                // Clicked inside logo
-                mainLogo.classList.add('animating');
-            } else {
-                // Clicked outside logo
-                mainLogo.classList.remove('animating');
-            }
-        });
-
-        // Logic 2: PC Specific cleanup
-        // If mouse leaves the logo, remove the class immediately.
-        // This ensures on PC it strictly follows "runs only when cursor is there".
-        mainLogo.addEventListener('mouseleave', () => {
-            mainLogo.classList.remove('animating');
-        });
-
-        const cornerLogo = document.getElementById('cornerLogo');
         const staticLogoSrc = "images/logo.png";
         const animatedLogoSrc = "images/animlogo.gif";
         let cornerLogoAnimationTimer;
-
-        cornerLogo.addEventListener('click', () => {
-            cornerLogo.src = animatedLogoSrc;
-            if (cornerLogoAnimationTimer) {
-                clearTimeout(cornerLogoAnimationTimer);
-            }
-            cornerLogoAnimationTimer = setTimeout(() => {
-                cornerLogo.src = staticLogoSrc;
-            }, 3000);
-        });
+        cornerLogo.addEventListener('click', () => { cornerLogo.src = animatedLogoSrc; if (cornerLogoAnimationTimer) clearTimeout(cornerLogoAnimationTimer); cornerLogoAnimationTimer = setTimeout(() => { cornerLogo.src = staticLogoSrc; }, 3000); });
     </script>
 </body>
 </html>
