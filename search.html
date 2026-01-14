@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiniFlash - Arcade Search</title>
     
-    <!-- === FAVICON === -->
     <link rel="icon" href="images/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="images/logo.png">
 
@@ -15,7 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        /* === GLOBAL RESET & VARIABLES === */
         :root {
             --brand-yellow: #ffde03;
             --brand-pink: #ff00ff;
@@ -24,318 +22,142 @@
             --hard-shadow: 6px 6px 0px black;
         }
 
-        /* === PREVENT SELECTION === */
-        * {
-            box-sizing: border-box;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-
-        input {
-            -webkit-user-select: text !important;
-            -moz-user-select: text !important;
-            -ms-user-select: text !important;
-            user-select: text !important;
-        }
+        * { box-sizing: border-box; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
+        input { -webkit-user-select: text !important; user-select: text !important; }
 
         body {
             font-family: 'Comic Neue', sans-serif;
             background-color: #fdfbf7; 
             background-image: linear-gradient(#00000008 2px, transparent 2px),
                               linear-gradient(90deg, #00000008 2px, transparent 2px);
-            background-size: 40px 40px;
-            color: black;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-size: 40px 40px; color: black; margin: 0;
+            display: flex; flex-direction: column; align-items: center;
+            /* UPDATED: min-height wapas add kiya hai */
             min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-
-        /* === LEFT LOGO === */
-        .left-logo {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            transition: opacity 0.3s ease-out;
-        }
-
-        .left-logo img {
-            width: 70px;
-            height: auto;
-            cursor: pointer;
-            display: block;
-            pointer-events: auto;
+            padding: 20px; overflow-x: hidden;
         }
         
-        .left-logo.hidden { opacity: 0; pointer-events: none; }
-
-        /* === HEADER === */
-        header {
-            margin-top: 20px;
-            text-align: center;
-            flex-shrink: 0;
-            z-index: 2;
-            width: 100%;
-        }
-
-        .main-logo {
-            font-family: 'Bungee', cursive;
-            font-size: 4rem;
-            color: white;
-            text-shadow: 4px 4px 0px black;
-            -webkit-text-stroke: 2px black;
-            letter-spacing: 2px;
-            position: relative;
-            display: inline-block;
-            cursor: default;
-            max-width: 100%;
-            word-wrap: break-word;
-        }
-
-        .main-logo span { color: var(--brand-yellow); }
-
-        .main-logo:hover {
-            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        /* === INFO BUTTON === */
-        .top-controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            transition: opacity 0.3s ease-out;
-        }
-        .top-controls.hidden { opacity: 0; pointer-events: none; }
-
-        .info-btn {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border: var(--dark-border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Comic Neue', sans-serif;
-            font-weight: bold;
-            font-size: 2rem;
-            padding-bottom: 5px;
-            color: black;
-            box-shadow: var(--hard-shadow);
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .info-btn:hover { background: var(--brand-cyan); transform: translate(-2px, -2px); box-shadow: 8px 8px 0px black; }
-        .info-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
-
-        /* === CONTAINER === */
         .container {
-            width: 95%;
-            max-width: 650px;
-            display: flex;
-            flex-direction: column;
+            width: 95%; max-width: 650px; display: flex; flex-direction: column;
             justify-content: center;
+            /* UPDATED: flex-grow ab hamesha 1 rahega */
             flex-grow: 1; 
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-bottom: 80px;
         }
 
-        .container.results-active {
-            flex-grow: 0;
-            margin-top: 30px;
-            margin-bottom: 50px;
-        }
+        .left-logo { position: fixed; top: 20px; left: 20px; z-index: 100; transition: opacity 0.3s ease-out; }
+        .left-logo img { width: 70px; height: auto; cursor: pointer; display: block; pointer-events: auto; }
+        .left-logo.hidden { opacity: 0; pointer-events: none; }
 
+        header { margin-top: 20px; text-align: center; flex-shrink: 0; z-index: 2; width: 100%; }
+        .main-logo {
+            font-family: 'Bungee', cursive; font-size: 4rem; color: white;
+            text-shadow: 4px 4px 0px black; -webkit-text-stroke: 2px black;
+            letter-spacing: 2px; position: relative; display: inline-block;
+            cursor: default; max-width: 100%; word-wrap: break-word;
+        }
+        .main-logo span { color: var(--brand-yellow); }
+        .main-logo:hover { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; }
+        @keyframes glitch { 0%{transform:translate(0)} 20%{transform:translate(-2px,2px)} 40%{transform:translate(-2px,-2px)} 60%{transform:translate(2px,2px)} 80%{transform:translate(2px,-2px)} 100%{transform:translate(0)} }
+
+        .top-controls { position: fixed; top: 20px; right: 20px; z-index: 100; transition: opacity 0.3s ease-out; }
+        .top-controls.hidden { opacity: 0; pointer-events: none; }
+        .info-btn {
+            width: 50px; height: 50px; background: white; border: var(--dark-border);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-family: 'Comic Neue', sans-serif; font-weight: bold; font-size: 2rem;
+            padding-bottom: 5px; color: black; box-shadow: var(--hard-shadow);
+            cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .info-btn:hover { background: var(--brand-cyan); transform: translate(-2px, -2px); box-shadow: 8px 8px 0px black; }
+        .info-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
+
+        /* JAB RESULTS ACTIVE HONGE, to container ab bhi stretch karega */
+        .container.results-active { 
+            justify-content: flex-start; /* Results ko upar se shuru karega */
+            margin-top: 30px; 
+            margin-bottom: 50px; 
+        }
         .search-wrapper { position: relative; width: 100%; }
-
-        /* === INPUT BOX === */
         input {
-            width: 100%;
-            padding: 20px 30px;
-            font-size: 1.5rem;
-            font-family: 'Comic Neue', cursive;
-            font-weight: 700;
-            border: var(--dark-border);
-            border-radius: 50px;
-            outline: none;
-            box-shadow: var(--hard-shadow);
-            transition: all 0.2s;
-            background: white;
-            text-align: center;
+            width: 100%; padding: 20px 30px; font-size: 1.5rem;
+            font-family: 'Comic Neue', cursive; font-weight: 700;
+            border: var(--dark-border); border-radius: 50px; outline: none;
+            box-shadow: var(--hard-shadow); transition: all 0.2s;
+            background: white; text-align: center;
         }
-        input:focus {
-            transform: translateY(4px);
-            box-shadow: 2px 2px 0px black;
-            background-color: var(--brand-yellow);
-            text-align: left;
-            padding-left: 30px;
-        }
+        input:focus { transform: translateY(4px); box-shadow: 2px 2px 0px black; background-color: var(--brand-yellow); text-align: left; padding-left: 30px; }
 
-        /* === RESULTS LIST === */
-        .results {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            width: 100%;
-            opacity: 0;
-            height: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            margin-top: 0;
-        }
-        .container.results-active .results {
-            margin-top: 40px;
-            opacity: 1;
-            height: auto;
-            overflow: visible;
-        }
+        .results { display: flex; flex-direction: column; gap: 25px; width: 100%; opacity: 0; height: 0; overflow: hidden; transition: all 0.5s ease; margin-top: 0; }
+        .container.results-active .results { margin-top: 40px; opacity: 1; height: auto; overflow: visible; }
 
-        /* === GAME CARDS === */
         .game-card {
-            display: flex;
-            align-items: center;
-            background: white;
-            border: var(--dark-border);
-            border-radius: 12px;
-            text-decoration: none;
-            color: black;
-            transition: all 0.2s ease;
-            box-shadow: var(--hard-shadow);
-            position: relative;
-            overflow: hidden;
-            transform: rotate(0deg);
+            display: flex; align-items: center; background: white;
+            border: var(--dark-border); border-radius: 12px;
+            text-decoration: none; color: black; transition: all 0.2s ease;
+            box-shadow: var(--hard-shadow); position: relative; overflow: hidden;
+            transform: rotate(0deg); cursor: pointer;
         }
         .game-card:hover { z-index: 10; background-color: #fff9db; }
         .game-card:hover:nth-child(odd) { transform: translateY(-5px) rotate(-2deg); box-shadow: 8px 8px 0px black; }
         .game-card:hover:nth-child(even) { transform: translateY(-5px) rotate(2deg); box-shadow: 8px 8px 0px black; }
 
-        /* --- UPDATED LOGO CSS FOR 16:9 RATIO --- */
-        .game-logo {
-            width: 160px; /* Wider for 16:9 */
-            height: 90px; /* Proportional height */
-            background: #eee;
-            border-right: var(--dark-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .game-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .game-thumbnail { width: 160px; height: 90px; background: #eee; border-right: var(--dark-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
+        .game-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .ad_warn { position: absolute; top: 8px; right: 8px; background-color: var(--brand-pink); color: white; font-family: 'Bungee', cursive; font-size: 0.7rem; padding: 4px 8px; border-radius: 20px; border: 2px solid black; box-shadow: 2px 2px 0px black; z-index: 10; }
 
         .game-info { padding: 15px 25px; flex-grow: 1; }
         .game-info h3 { margin: 0; font-family: 'Bungee', cursive; font-size: 1.6rem; color: black; line-height: 1.2; }
         .game-info p { margin: 8px 0 0; font-size: 1.1rem; color: #333; font-weight: bold; }
+        .no-results-msg { font-family: 'Bungee', cursive; font-size: 1.5rem; text-align: center; padding: 20px; background: var(--brand-pink); color: white; border: var(--dark-border); box-shadow: var(--hard-shadow); transform: rotate(-1deg); }
 
-        .no-results-msg {
-            font-family: 'Bungee', cursive;
-            font-size: 1.5rem;
-            text-align: center;
-            padding: 20px;
-            background: var(--brand-pink);
-            color: white;
-            border: var(--dark-border);
-            box-shadow: var(--hard-shadow);
-            transform: rotate(-1deg);
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 999; opacity: 0; transition: opacity 0.3s; }
+        .modal-overlay.open { display: flex; opacity: 1; }
+        .modal-box { background: white; border: 4px solid black; box-shadow: 15px 15px 0px black; padding: 40px; width: 90%; max-width: 550px; text-align: center; position: relative; transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-overlay.open .modal-box { transform: scale(1); }
+        .modal-box h2 { font-family: 'Bungee', cursive; margin-top: 0; font-size: 2.5rem; color: var(--brand-pink); -webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px black; }
+        .modal-box p { font-size: 1.1rem; line-height: 1.6; }
+        .creator-name { font-size: 2rem; font-weight: bold; margin: 15px 0; background: var(--brand-yellow); border: 3px solid black; display: inline-block; padding: 10px 20px; transform: rotate(-3deg); box-shadow: 6px 6px 0px black; }
+        .contact-links { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .link-btn { padding: 15px; border: 3px solid black; font-weight: bold; text-decoration: none; color: black; box-shadow: 5px 5px 0px black; cursor: pointer; transition: all 0.2s; font-size: 1.1rem; }
+        .link-btn:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0px black; }
+        .link-btn.email { background: #dcffff; }
+        .link-btn.insta { background: #ffdcff; }
+        .close-modal { position: absolute; top: -20px; right: -20px; width: 50px; height: 50px; background: #ff0000; color: white; border: 4px solid black; font-family: 'Bungee', cursive; font-size: 1.5rem; cursor: pointer; box-shadow: 4px 4px 0px black; display: flex; align-items: center; justify-content: center; }
+        
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--brand-cyan); color: black; border: 3px solid black; padding: 15px 30px; font-family: 'Bungee', cursive; font-size: 1.2rem; box-shadow: 6px 6px 0px black; z-index: 2000; opacity: 0; transition: all 0.4s; pointer-events: none; }
+        .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        #adModal .modal-box { max-width: 800px; padding: 10px; background: #111; }
+        #adContent { min-height: auto; display: flex; align-items: center; justify-content: center; flex-direction: column; background: #000; border: none; margin-bottom: 15px; }
+        #adContent img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+        #skipAdBtn { font-family: 'Bungee', cursive; background: var(--brand-yellow); border: var(--dark-border); padding: 15px 30px; font-size: 1.5rem; cursor: pointer; box-shadow: var(--hard-shadow); transition: all 0.2s; }
+        #skipAdBtn:hover { background: var(--brand-pink); color: white; transform: translateY(-3px); box-shadow: 10px 10px 0px black; }
+        #skipAdBtn:disabled { background: #999; color: #ccc; cursor: not-allowed; transform: none; box-shadow: var(--hard-shadow); }
 
-        /* === MOBILE RESPONSIVENESS FIXES === */
+        .site-footer { width: 100%; padding: 20px 0; margin-top: auto; /* IMPORTANT: Yeh footer ko neeche push karega */ text-align: center; border-top: 3px solid black; background-color: #ffffff99; flex-shrink: 0; }
+        .footer-nav { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .footer-nav a { font-family: 'Bungee', cursive; color: black; text-decoration: none; font-size: 1.1rem; transition: color 0.2s, transform 0.2s; }
+        .footer-nav a:hover { color: var(--brand-pink); transform: translateY(-2px); }
+        .footer-nav a.disabled { opacity: 0.5; cursor: not-allowed; }
+        .footer-nav a.disabled:hover { color: black; transform: none; }
+
         @media (max-width: 768px) {
-            .main-logo {
-                font-size: 2.2rem;
-                margin-top: 60px;
-                letter-spacing: 1px;
-            }
+            .main-logo { font-size: 2.2rem; margin-top: 60px; letter-spacing: 1px; }
             .container { width: 90%; }
             input { font-size: 1.1rem; padding: 15px 20px; }
             input:focus { padding-left: 20px; }
-            
-            /* --- UPDATED MOBILE LOGO FOR 16:9 --- */
-            .game-logo { 
-                width: 110px; 
-                height: 62px; 
-            }
-            
+            .game-thumbnail { width: 110px; height: 62px; }
             .game-info h3 { font-size: 1.2rem; }
             .game-info p { font-size: 0.9rem; }
             .modal-box { width: 90%; padding: 25px; }
             .copy-toast { width: 90%; bottom: 20px !important; font-size: 1rem; }
             .close-modal { top: -15px; right: -10px; width: 40px; height: 40px; font-size: 1.2rem; }
-            
             .left-logo img { width: 50px; }
             .left-logo { top: 15px; left: 15px; }
         }
-
-        /* === MODAL & TOAST === */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: none; align-items: center; justify-content: center;
-            z-index: 999; opacity: 0; transition: opacity 0.3s;
-        }
-        .modal-overlay.open { display: flex; opacity: 1; }
-        .modal-box {
-            background: white; border: 4px solid black;
-            box-shadow: 15px 15px 0px black; padding: 40px;
-            width: 90%; max-width: 450px; text-align: center;
-            position: relative; transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .modal-overlay.open .modal-box { transform: scale(1); }
-        .modal-box h2 {
-            font-family: 'Bungee', cursive; margin-top: 0; font-size: 2.5rem;
-            color: var(--brand-pink); -webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px black;
-        }
-        .creator-name {
-            font-size: 2rem; font-weight: bold; margin: 15px 0;
-            background: var(--brand-yellow); border: 3px solid black;
-            display: inline-block; padding: 10px 20px;
-            transform: rotate(-3deg); box-shadow: 6px 6px 0px black;
-        }
-        .contact-links { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
-        .link-btn {
-            padding: 15px; border: 3px solid black; font-weight: bold;
-            text-decoration: none; color: black; box-shadow: 5px 5px 0px black;
-            cursor: pointer; transition: all 0.2s; font-size: 1.1rem;
-        }
-        .link-btn:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0px black; }
-        .link-btn.email { background: #dcffff; }
-        .link-btn.insta { background: #ffdcff; }
-        .close-modal {
-            position: absolute; top: -20px; right: -20px;
-            width: 50px; height: 50px; background: #ff0000; color: white;
-            border: 4px solid black; font-family: 'Bungee', cursive; font-size: 1.5rem;
-            cursor: pointer; box-shadow: 4px 4px 0px black;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .copy-toast {
-            position: fixed; bottom: 30px; left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--brand-cyan); color: black; border: 3px solid black;
-            padding: 15px 30px; font-family: 'Bungee', cursive; font-size: 1.2rem;
-            box-shadow: 6px 6px 0px black; z-index: 2000; opacity: 0;
-            transition: all 0.4s; pointer-events: none;
-        }
-        .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
@@ -343,7 +165,7 @@
     <div class="left-logo" id="leftLogo">
         <img src="images/logo.png" id="logoTrigger" alt="Home Logo" ondragstart="return false;">
     </div>
-
+    
     <div class="top-controls" id="topControls">
         <button class="info-btn" id="infoBtn">i</button>
     </div>
@@ -351,16 +173,15 @@
     <div id="copyToast" class="copy-toast">✅ EMAIL COPIED!</div>
 
     <div class="modal-overlay" id="creditModal">
-        <div class="modal-box">
-            <button class="close-modal" id="closeModal">X</button>
-            <h2 id="modalTitle">ABOUT</h2>
-            <p>DESIGNED & BUILT BY</p>
-            <div class="creator-name">Elia Haider</div>
-            <div class="contact-links">
-                <a id="emailLink" href="mailto:haiderhashmi11220@gmail.com" class="link-btn email">📧 Email Me</a>
-                <a href="https://www.instagram.com/elia_infinite" target="_blank" class="link-btn insta">📸 Instagram</a>
-            </div>
-        </div>
+        <div class="modal-box"> <button class="close-modal" id="closeCreditModal">X</button> <h2 id="modalTitle">ABOUT / CONTACT</h2> <p>DESIGNED & BUILT BY</p> <div class="creator-name">Elia Haider</div> <div class="contact-links"> <a id="emailLink" href="mailto:haiderhashmi11220@gmail.com" class="link-btn email">📧 Email Me</a> <a href="https://www.instagram.com/elia_infinite" target="_blank" class="link-btn insta">📸 Instagram</a> </div> </div>
+    </div>
+    
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-box"> <button class="close-modal" id="closePrivacyModal">X</button> <h2>PRIVACY POLICY</h2> <p style="text-align: left;">Welcome to MiniFlash! Your privacy is important to us.<br><br><strong>Advertisements:</strong> We display direct advertisements and may use third-party ad networks. These services help keep our games free.<br><br><strong>Cookies & Storage:</strong> We use your browser's session storage to manage our ad rotation system, ensuring you don't see the same ad repeatedly. We do not store any personal identification information.</p> </div>
+    </div>
+    
+    <div class="modal-overlay" id="adModal">
+        <div class="modal-box"> <div id="adContent"></div> <button id="skipAdBtn">Skip Ad & Play</button> </div>
     </div>
 
     <header>
@@ -374,129 +195,77 @@
         <div id="results-list" class="results"></div>
     </div>
 
+    <footer class="site-footer">
+        <nav class="footer-nav">
+            <a href="#" class="disabled" title="Coming Soon!">Home</a>
+            <a href="#" id="footerAboutBtn">About Us</a>
+            <a href="#" id="footerPrivacyBtn">Privacy Policy</a>
+            <a href="#" id="footerContactBtn">Contact</a>
+        </nav>
+    </footer>
+
+    <script src="ads.js"></script>
     <script>
+        // (JavaScript mein koi tabdeeli nahi hai, isliye wahi code hai)
         const gameData = [
-            { 
-                id: 1, 
-                title: "Flash Fingers", 
-                description: "Test your typing speed in this retro challenge.", 
-                // Path uses lowercase folder name and trailing slash
-                path: "flashfingers/", 
-                // Image path uses lowercase folder name and original uppercase THM.jpg
-                image: "flashfingers/THM.jpg" 
-            },
-            { 
-                id: 2, 
-                title: "Brain Fry", 
-                description: "High speed quiz. Think fast or get fried!", 
-                // Path uses lowercase folder name and trailing slash
-                path: "brainfry/", 
-                // Image path uses lowercase folder name and original uppercase THM.jpg
-                image: "brainfry/THM.jpg" 
-            }
-            // Agar aur games hain aur unke folders ko bhi lowercase kiya hai to unhe bhi yahan add kar do
-            // For example:
-            // { 
-            //     id: 3, 
-            //     title: "Pixel Jump", 
-            //     description: "Jump through the pixelated obstacles!", 
-            //     path: "pixeljump/", 
-            //     image: "pixeljump/THM.jpg" 
-            // }
+            { title: "Flash Fingers", description: "Test your typing speed in this retro challenge.", path: "flashfingers/", image: "flashfingers/THM.jpg", external: false },
+            { title: "Brain Fry", description: "High speed quiz. Think fast or get fried!", path: "brainfry/", image: "brainfry/THM.jpg", external: false },
+            { title: "Cool Math Games", description: "Check out this awesome external site for more games!", path: "coolmathgame", image: "coolmathgame/THM.jpg", external: false }
         ];
 
-        const fuse = new Fuse(gameData, {
-            keys: ["title", "description"],
-            threshold: 0.4
-        });
-
+        const fuse = new Fuse(gameData, { keys: ["title", "description"], threshold: 0.4 });
         const searchInput = document.getElementById('search-input');
         const resultsList = document.getElementById('results-list');
         const container = document.getElementById('main-container');
 
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const query = e.target.value;
-                if (query.trim() === "") {
-                    resultsList.innerHTML = "";
-                    container.classList.remove('results-active');
-                    return;
-                }
-                const results = fuse.search(query).map(r => r.item);
-                container.classList.add('results-active');
-                resultsList.innerHTML = results.map(game => `
-                    <a href="${game.path}" class="game-card">
-                        <div class="game-logo">${game.image ? `<img src="${game.image}" alt="${game.title}" ondragstart="return false;">` : game.title[0]}</div>
-                        <div class="game-info"><h3>${game.title}</h3><p>${game.description}</p></div>
-                    </a>
-                `).join('');
-                if (results.length === 0) resultsList.innerHTML = '<div class="no-results-msg">👾 NO GAMES FOUND!</div>';
-            }
-        });
-
-        searchInput.addEventListener('focus', () => { searchInput.style.textAlign = "left"; });
-        searchInput.addEventListener('blur', () => { if(searchInput.value === "") searchInput.style.textAlign = "center"; });
-        searchInput.addEventListener('input', (e) => {
-            if (e.target.value.trim() === "") {
+        function displayResults(query) {
+            if (query.trim() === "") {
                 resultsList.innerHTML = "";
                 container.classList.remove('results-active');
+                return;
             }
-        });
+            
+            const results = fuse.search(query).map(r => r.item);
+            container.classList.add('results-active');
+            
+            if (results.length > 0) {
+                resultsList.innerHTML = results.map(game => `<div class="game-card" data-url="${game.path}"><div class="game-thumbnail"><img src="${game.image}" alt="${game.title}" ondragstart="return false;"></div><div class="game-info"><h3>${game.title}</h3><p>${game.description}</p></div></div>`).join('');
+            } else {
+                resultsList.innerHTML = '<div class="no-results-msg">👾 NO GAMES FOUND!</div>';
+            }
+            document.dispatchEvent(new CustomEvent('gamesRendered'));
+        }
 
-        const infoBtn = document.getElementById('infoBtn');
-        const modal = document.getElementById('creditModal');
-        const closeBtn = document.getElementById('closeModal');
+        searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') displayResults(e.target.value); });
+        searchInput.addEventListener('input', e => { if (e.target.value.trim() === "") displayResults(""); });
+
+        const creditModal = document.getElementById('creditModal');
+        const privacyModal = document.getElementById('privacyModal');
+        
+        document.getElementById('infoBtn').onclick = () => creditModal.classList.add('open');
+        document.getElementById('closeCreditModal').onclick = () => creditModal.classList.remove('open');
+        document.getElementById('closePrivacyModal').onclick = () => privacyModal.classList.remove('open');
+        
+        document.getElementById('footerAboutBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
+        document.getElementById('footerPrivacyBtn').onclick = (e) => { e.preventDefault(); privacyModal.classList.add('open'); };
+        document.getElementById('footerContactBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
+        
+        document.querySelector('.footer-nav a.disabled').addEventListener('click', e => e.preventDefault());
+
         const emailLink = document.getElementById('emailLink');
         const copyToast = document.getElementById('copyToast');
-        const topControls = document.getElementById('topControls');
-
-        infoBtn.addEventListener('click', () => modal.classList.add('open'));
-        closeBtn.addEventListener('click', () => modal.classList.remove('open'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
-
-        emailLink.addEventListener('click', function(e) {
-            if (window.innerWidth > 768) {
-                e.preventDefault();
-                navigator.clipboard.writeText("haiderhashmi11220@gmail.com").then(() => {
-                    copyToast.classList.add('show');
-                    setTimeout(() => copyToast.classList.remove('show'), 2000);
-                });
-            }
-        });
+        emailLink.addEventListener('click', function(e) { if (window.innerWidth > 768) { e.preventDefault(); navigator.clipboard.writeText("haiderhashmi11220@gmail.com").then(() => { copyToast.classList.add('show'); setTimeout(() => copyToast.classList.remove('show'), 2000); }); } });
 
         const logoTrigger = document.getElementById('logoTrigger');
         const staticSrc = "images/logo.png";
         const gifSrc = "images/animlogo.gif";
         let isPlaying = false; 
+        logoTrigger.addEventListener('click', () => { if (isPlaying) return; isPlaying = true; logoTrigger.src = `${gifSrc}?t=${new Date().getTime()}`; setTimeout(() => { logoTrigger.src = staticSrc; isPlaying = false; }, 2500); });
 
-        logoTrigger.addEventListener('click', () => {
-            if (isPlaying) return; 
-            isPlaying = true;
-            logoTrigger.src = `${gifSrc}?t=${new Date().getTime()}`;
-            setTimeout(() => {
-                logoTrigger.src = staticSrc;
-                isPlaying = false;
-            }, 2500); 
-        });
-
-        const leftLogo = document.getElementById('leftLogo');
         let lastScrollY = window.scrollY;
-        
-        window.addEventListener('scroll', () => {
-            if (window.innerWidth <= 768) { 
-                if (window.scrollY > lastScrollY && window.scrollY > 50) { 
-                    topControls.classList.add('hidden');
-                    leftLogo.classList.add('hidden');
-                } else { 
-                    topControls.classList.remove('hidden');
-                    leftLogo.classList.remove('hidden');
-                }
-            } else {
-                 topControls.classList.remove('hidden'); 
-                 leftLogo.classList.remove('hidden');
-            }
-            lastScrollY = window.scrollY;
-        });
+        const topControls = document.getElementById('topControls');
+        const leftLogo = document.getElementById('leftLogo');
+        window.addEventListener('scroll', () => { if (window.innerWidth <= 768) { if (window.scrollY > lastScrollY && window.scrollY > 50) { topControls.classList.add('hidden'); leftLogo.classList.add('hidden'); } else { topControls.classList.remove('hidden'); leftLogo.classList.remove('hidden'); } } else { topControls.classList.remove('hidden'); leftLogo.classList.remove('hidden'); } lastScrollY = window.scrollY; });
     </script>
 </body>
 </html>
