@@ -11,6 +11,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FWJSSV720R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FWJSSV720R');
+    </script>
+    
     <style>
         :root {
             --brand-yellow: #ffde03;
@@ -39,26 +48,17 @@
         }
         
         .container {
-            flex-grow: 1; /* Ensures container pushes footer down */
+            flex-grow: 1;
             width: 95%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; margin-bottom: 80px;
         }
 
-        .corner-logo {
-            position: fixed; top: 20px; left: 20px; z-index: 1000;
-            cursor: pointer; width: 80px; height: auto;
-            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2));
-            transition: transform 0.2s, opacity 0.3s ease-out;
-        }
+        .corner-logo { position: fixed; top: 20px; left: 20px; z-index: 1000; cursor: pointer; width: 80px; height: auto; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2)); transition: transform 0.2s, opacity 0.3s ease-out; }
         .corner-logo.hidden { opacity: 0; pointer-events: none; }
         .corner-logo:hover { transform: scale(1.1) rotate(-3deg); }
 
         header { margin-top: 20px; text-align: center; z-index: 2; margin-bottom: 20px; width: 100%; }
 
-        .main-logo {
-            font-family: 'Bungee', cursive; font-size: 5rem; color: white;
-            text-shadow: 6px 6px 0px black; -webkit-text-stroke: 2px black;
-            letter-spacing: 4px; position: relative; display: inline-block; cursor: pointer;
-        }
+        .main-logo { font-family: 'Bungee', cursive; font-size: 5rem; color: white; text-shadow: 6px 6px 0px black; -webkit-text-stroke: 2px black; letter-spacing: 4px; position: relative; display: inline-block; cursor: pointer; }
         .main-logo span { color: var(--brand-yellow); }
         .main-logo:hover, .main-logo.animating { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite, blink-colors 0.5s infinite; }
 
@@ -68,131 +68,55 @@
         .top-controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 100; transition: opacity 0.3s ease-out; }
         .top-controls.hidden { opacity: 0; pointer-events: none; }
 
-        .icon-btn {
-            width: 60px; height: 60px; background: white; border: var(--dark-border);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-family: 'Comic Neue', sans-serif; font-weight: bold; font-size: 2rem;
-            color: black; box-shadow: var(--hard-shadow); cursor: pointer; transition: all 0.1s;
-        }
+        .icon-btn { width: 60px; height: 60px; background: white; border: var(--dark-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Comic Neue', sans-serif; font-weight: bold; font-size: 2rem; color: black; box-shadow: var(--hard-shadow); cursor: pointer; transition: all 0.1s; }
         #searchBtn { display: none; background: var(--brand-yellow); }
         .icon-btn:hover { background: var(--brand-cyan); transform: translate(-3px, -3px); box-shadow: 12px 12px 0px black; }
         #searchBtn.active { background: #ff0000; color: white; }
 
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
-            display: none; align-items: center; justify-content: center; z-index: 999;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 999; }
         .modal-overlay.open { display: flex; }
 
-        .modal-box {
-            background: white; border: var(--dark-border); box-shadow: 15px 15px 0px black;
-            padding: 40px; width: 90%; max-width: 550px; text-align: center; position: relative;
-        }
-        .modal-box h2 {
-            font-family: 'Bungee', cursive; margin-top: 0; font-size: 2.5rem;
-            color: var(--brand-pink); -webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px black;
-        }
+        .modal-box { background: white; border: var(--dark-border); box-shadow: 15px 15px 0px black; padding: 40px; width: 90%; max-width: 550px; text-align: center; position: relative; }
+        .modal-box h2 { font-family: 'Bungee', cursive; margin-top: 0; font-size: 2.5rem; color: var(--brand-pink); -webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px black; }
         .modal-box p { font-size: 1.1rem; line-height: 1.6; }
         
-        .creator-name {
-            font-size: 2rem; font-weight: bold; margin: 15px 0; background: var(--brand-yellow);
-            border: 3px solid black; display: inline-block; padding: 10px 20px;
-            transform: rotate(-3deg); box-shadow: 6px 6px 0px black;
-        }
-        .close-modal {
-            position: absolute; top: -20px; right: -20px; width: 50px; height: 50px;
-            background: #ff0000; color: white; border: 4px solid black;
-            font-family: 'Bungee', cursive; font-size: 1.5rem; cursor: pointer; box-shadow: 4px 4px 0px black;
-        }
+        .creator-name { font-size: 2rem; font-weight: bold; margin: 15px 0; background: var(--brand-yellow); border: 3px solid black; display: inline-block; padding: 10px 20px; transform: rotate(-3deg); box-shadow: 6px 6px 0px black; }
+        .close-modal { position: absolute; top: -20px; right: -20px; width: 50px; height: 50px; background: #ff0000; color: white; border: 4px solid black; font-family: 'Bungee', cursive; font-size: 1.5rem; cursor: pointer; box-shadow: 4px 4px 0px black; }
 
-        .copy-toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--brand-cyan); color: black; border: var(--dark-border); padding: 15px 30px;
-            font-family: 'Bungee', cursive; font-size: 1.2rem; box-shadow: var(--hard-shadow);
-            z-index: 2000; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
+        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--brand-cyan); color: black; border: var(--dark-border); padding: 15px 30px; font-family: 'Bungee', cursive; font-size: 1.2rem; box-shadow: var(--hard-shadow); z-index: 2000; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
         .search-wrapper { width: 100%; max-width: 700px; margin-bottom: 60px; transition: all 0.3s; }
-        input {
-            width: 100%; padding: 25px 40px; font-size: 1.8rem; font-family: 'Comic Neue', cursive;
-            font-weight: 700; border: var(--dark-border); border-radius: 60px; outline: none;
-            box-shadow: var(--hard-shadow); transition: all 0.2s; background: white;
-            text-align: center; box-sizing: border-box;
-        }
+        input { width: 100%; padding: 25px 40px; font-size: 1.8rem; font-family: 'Comic Neue', cursive; font-weight: 700; border: var(--dark-border); border-radius: 60px; outline: none; box-shadow: var(--hard-shadow); transition: all 0.2s; background: white; text-align: center; box-sizing: border-box; }
         input:focus { transform: translateY(4px); box-shadow: 3px 3px 0px black; background-color: var(--brand-yellow); text-align: left; padding-left: 40px; }
 
         .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; }
 
-        .game-card {
-            display: flex; flex-direction: column; background: white; border: var(--dark-border);
-            border-radius: 20px; text-decoration: none; color: black;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: var(--hard-shadow); position: relative; overflow: hidden; height: 100%; cursor: pointer;
-        }
-        
-        /* --- NEW: HIDE CARDS FOR SEARCH OPTIMIZATION --- */
-        .game-card.hidden {
-            display: none;
-        }
-        
+        .game-card { display: flex; flex-direction: column; background: white; border: var(--dark-border); border-radius: 20px; text-decoration: none; color: black; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: var(--hard-shadow); position: relative; overflow: hidden; height: 100%; cursor: pointer; }
+        .game-card.hidden { display: none; }
         .game-card:hover { transform: translateY(-10px) rotate(2deg); box-shadow: 12px 12px 0px black; background-color: #fff9db; }
         .game-thumbnail { width: 100%; aspect-ratio: 16 / 9; background: #eee; border-bottom: var(--dark-border); overflow: hidden; position: relative; }
         .game-card:hover .game-thumbnail img { transform: scale(1.1) rotate(2deg); }
-        .ad_warn {
-            position: absolute; top: 15px; right: 15px; background-color: var(--brand-pink);
-            color: white; font-family: 'Bungee', cursive; font-size: 0.8rem; padding: 5px 10px;
-            border-radius: 20px; border: 3px solid black; box-shadow: 3px 3px 0px black; z-index: 10;
-        }
+        .ad_warn { position: absolute; top: 15px; right: 15px; background-color: var(--brand-pink); color: white; font-family: 'Bungee', cursive; font-size: 0.8rem; padding: 5px 10px; border-radius: 20px; border: 3px solid black; box-shadow: 3px 3px 0px black; z-index: 10; }
         .game-thumbnail img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .game-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; text-align: center; }
         .game-info h3 { margin: 0; font-family: 'Bungee', cursive; font-size: 1.8rem; color: black; line-height: 1.2; -webkit-text-stroke: 1px black; }
         .game-info p { margin: 15px 0 0; font-size: 1.2rem; color: #444; font-weight: bold; line-height: 1.4; }
-        .no-results-msg {
-            grid-column: 1 / -1; font-family: 'Bungee', cursive; font-size: 2rem;
-            text-align: center; padding: 40px; background: var(--brand-pink);
-            color: white; border: var(--dark-border); box-shadow: var(--hard-shadow);
-            transform: rotate(-1deg); display: none;
-        }
+        .no-results-msg { grid-column: 1 / -1; font-family: 'Bungee', cursive; font-size: 2rem; text-align: center; padding: 40px; background: var(--brand-pink); color: white; border: var(--dark-border); box-shadow: var(--hard-shadow); transform: rotate(-1deg); display: none; }
         
         #adModal .modal-box { max-width: 800px; padding: 10px; background: #111; }
         #adContent { min-height: auto; display: flex; align-items: center; justify-content: center; flex-direction: column; background: #000; border: none; margin-bottom: 15px; }
         #adContent img { max-width: 100%; max-height: 80vh; object-fit: contain; }
-        #skipAdBtn {
-            font-family: 'Bungee', cursive; background: var(--brand-yellow); border: var(--dark-border);
-            padding: 15px 30px; font-size: 1.5rem; cursor: pointer; box-shadow: var(--hard-shadow); transition: all 0.2s;
-        }
+        #skipAdBtn { font-family: 'Bungee', cursive; background: var(--brand-yellow); border: var(--dark-border); padding: 15px 30px; font-size: 1.5rem; cursor: pointer; box-shadow: var(--hard-shadow); transition: all 0.2s; }
         #skipAdBtn:hover { background: var(--brand-pink); color: white; transform: translateY(-3px); box-shadow: 10px 10px 0px black; }
         #skipAdBtn:disabled { background: #999; color: #ccc; cursor: not-allowed; transform: none; box-shadow: var(--hard-shadow); }
 
-        /* --- NEW: MINIMALIST FOOTER MENU --- */
-        .site-footer {
-            width: 100%;
-            padding: 20px 0;
-            margin-top: 40px;
-            text-align: center;
-            border-top: var(--dark-border);
-            background-color: #ffffff99;
-        }
-        .footer-nav {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .footer-nav a {
-            font-family: 'Bungee', cursive;
-            color: black;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: color 0.2s, transform 0.2s;
-        }
-        .footer-nav a:hover {
-            color: var(--brand-pink);
-            transform: translateY(-2px);
-        }
+        .site-footer { width: 100%; padding: 20px 0; margin-top: auto; text-align: center; border-top: var(--dark-border); background-color: #ffffff99; }
+        .footer-nav { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .footer-nav a { font-family: 'Bungee', cursive; color: black; text-decoration: none; font-size: 1.1rem; transition: color 0.2s, transform 0.2s; }
+        .footer-nav a:hover { color: var(--brand-pink); transform: translateY(-2px); }
+        .footer-nav a.disabled { opacity: 0.5; cursor: not-allowed; }
+        .footer-nav a.disabled:hover { color: black; transform: none; }
 
         @media (max-width: 1024px) { .results { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
@@ -207,15 +131,6 @@
             input { font-size: 1.2rem; padding: 15px 25px; }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FWJSSV720R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FWJSSV720R');
-</script>
 </head>
 <body>
 
@@ -227,43 +142,17 @@
 
     <div id="copyToast" class="copy-toast">✅ EMAIL COPIED!</div>
 
-    <!-- Credit / About Modal -->
     <div class="modal-overlay" id="creditModal">
-        <div class="modal-box">
-            <button class="close-modal" id="closeCreditModal">X</button>
-            <h2 id="modalTitle">ABOUT / CONTACT</h2>
-            <p>DESIGNED & BUILT BY</p>
-            <div class="creator-name">Elia Haider</div>
-            <div class="contact-links" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
-                <a id="emailLink" href="mailto:haiderhashmi11220@gmail.com" style="padding:15px; border:3px solid black; background:#dcffff; font-weight:bold; text-decoration:none; color:black; box-shadow:5px 5px 0px black; cursor: pointer;">📧 Email Me</a>
-                <a href="https://www.instagram.com/elia_infinite" target="_blank" style="padding:15px; border:3px solid black; background:#ffdcff; font-weight:bold; text-decoration:none; color:black; box-shadow:5px 5px 0px black;">📸 Instagram</a>
-            </div>
-        </div>
+        <div class="modal-box"> <button class="close-modal" id="closeCreditModal">X</button> <h2 id="modalTitle">ABOUT / CONTACT</h2> <p>DESIGNED & BUILT BY</p> <div class="creator-name">Elia Haider</div> <div class="contact-links" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;"> <a id="emailLink" href="mailto:haiderhashmi11220@gmail.com" style="padding:15px; border:3px solid black; background:#dcffff; font-weight:bold; text-decoration:none; color:black; box-shadow:5px 5px 0px black; cursor: pointer;">📧 Email Me</a> <a href="https://www.instagram.com/elia_infinite" target="_blank" style="padding:15px; border:3px solid black; background:#ffdcff; font-weight:bold; text-decoration:none; color:black; box-shadow:5px 5px 0px black;">📸 Instagram</a> </div> </div>
     </div>
     
-    <!-- NEW: Privacy Policy Modal -->
     <div class="modal-overlay" id="privacyModal">
-        <div class="modal-box">
-            <button class="close-modal" id="closePrivacyModal">X</button>
-            <h2>PRIVACY POLICY</h2>
-            <p style="text-align: left;">
-                Welcome to MiniFlash! Your privacy is important to us.
-                <br><br>
-                <strong>Advertisements:</strong> We display direct advertisements from our partners and may use third-party ad networks. These services help keep our games free to play.
-                <br><br>
-                <strong>Cookies & Storage:</strong> To improve your experience, we use your browser's local/session storage. This is primarily to manage our ad rotation system, ensuring you don't see the same ad repeatedly during a single session. We do not store any personal identification information.
-            </p>
-        </div>
+        <div class="modal-box"> <button class="close-modal" id="closePrivacyModal">X</button> <h2>PRIVACY POLICY</h2> <p style="text-align: left;"> Welcome to MiniFlash! Your privacy is important to us. <br><br> <strong>Advertisements:</strong> We display direct advertisements from our partners and may use third-party ad networks. These services help keep our games free to play. <br><br> <strong>Cookies & Storage:</strong> To improve your experience, we use your browser's local/session storage. This is primarily to manage our ad rotation system, ensuring you don't see the same ad repeatedly during a single session. We do not store any personal identification information. </p> </div>
     </div>
     
-    <!-- Ad Modal -->
     <div class="modal-overlay" id="adModal">
-        <div class="modal-box">
-            <div id="adContent"></div>
-            <button id="skipAdBtn">Skip Ad & Play</button>
-        </div>
+        <div class="modal-box"> <div id="adContent"></div> <button id="skipAdBtn">Skip Ad & Play</button> </div>
     </div>
-
 
     <header>
         <div class="main-logo" id="mainLogo"><span>MINI</span>FLASH</div>
@@ -277,10 +166,9 @@
         <div id="no-results" class="no-results-msg">NO GAMES FOUND!</div>
     </div>
 
-    <!-- NEW: Footer Menu -->
     <footer class="site-footer">
         <nav class="footer-nav">
-            <a href="#">Home</a>
+            <a href="#" class="disabled" title="Coming Soon!">Home</a>
             <a href="#" id="footerAboutBtn">About Us</a>
             <a href="#" id="footerPrivacyBtn">Privacy Policy</a>
             <a href="#" id="footerContactBtn">Contact</a>
@@ -288,53 +176,37 @@
     </footer>
 
     <script src="ads.js"></script> 
-
     <script>
         const games = [
             { title: "Flash Fingers", desc: "Test your typing speed in this retro challenge.", img: "flashfingers/THM.jpg", url: "flashfingers/" },
             { title: "Brain Fry", desc: "High speed quiz. Think fast or get fried!", img: "brainfry/THM.jpg", url: "brainfry/" },
             { title: "Pixel Jump", desc: "Jump through the pixelated obstacles!", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800", url: "pixeljump/" }
-            // Add 12+ more games here and the code will handle it perfectly
         ];
 
         const resultsList = document.getElementById('results-list');
         const searchInput = document.getElementById('search-input');
         const noResults = document.getElementById('no-results');
 
-        /**
-         * OPTIMIZED: Creates all game cards once on page load.
-         */
         function renderAllGamesOnce() {
             games.forEach(game => {
                 const card = document.createElement('div');
                 card.className = "game-card";
                 card.dataset.url = game.url;
-                // Store title and desc for efficient searching later
                 card.dataset.title = game.title.toLowerCase();
                 card.dataset.desc = game.desc.toLowerCase();
-                
-                card.innerHTML = `
-                    <div class="game-thumbnail"><img src="${game.img}" alt="${game.title}"></div>
-                    <div class="game-info"><h3>${game.title}</h3><p>${game.desc}</p></div>
-                `;
+                card.innerHTML = `<div class="game-thumbnail"><img src="${game.img}" alt="${game.title}"></div><div class="game-info"><h3>${game.title}</h3><p>${game.desc}</p></div>`;
                 resultsList.appendChild(card);
             });
-            // Inform the ad system that cards are ready
             document.dispatchEvent(new CustomEvent('gamesRendered'));
         }
 
-        /**
-         * OPTIMIZED: Filters games by showing/hiding existing cards instead of rebuilding the DOM.
-         */
         function filterGames(searchTerm) {
             const search = searchTerm.toLowerCase().trim();
             const allCards = resultsList.getElementsByClassName('game-card');
             let visibleCount = 0;
-
             for (const card of allCards) {
                 const title = card.dataset.title;
                 const desc = card.dataset.desc;
-
                 if (title.includes(search) || desc.includes(search)) {
                     card.classList.remove('hidden');
                     visibleCount++;
@@ -342,26 +214,33 @@
                     card.classList.add('hidden');
                 }
             }
-
             noResults.style.display = visibleCount === 0 ? 'block' : 'none';
         }
         
-        // Initial setup
         renderAllGamesOnce();
         searchInput.addEventListener('input', (e) => filterGames(e.target.value));
 
-        // Modal and UI Control Listeners
         const creditModal = document.getElementById('creditModal');
         const privacyModal = document.getElementById('privacyModal');
-        
-        document.getElementById('infoBtn').onclick = () => creditModal.classList.add('open');
+        document.getElementById('infoBtn').onclick = () => {
+            if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'top_button' });
+            creditModal.classList.add('open');
+        };
         document.getElementById('closeCreditModal').onclick = () => creditModal.classList.remove('open');
         document.getElementById('closePrivacyModal').onclick = () => privacyModal.classList.remove('open');
         
-        // Footer navigation listeners
-        document.getElementById('footerAboutBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
+        document.getElementById('footerAboutBtn').onclick = (e) => { 
+            e.preventDefault(); 
+            if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'footer_about' });
+            creditModal.classList.add('open'); 
+        };
         document.getElementById('footerPrivacyBtn').onclick = (e) => { e.preventDefault(); privacyModal.classList.add('open'); };
-        document.getElementById('footerContactBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
+        document.getElementById('footerContactBtn').onclick = (e) => { 
+            e.preventDefault(); 
+            if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'footer_contact' });
+            creditModal.classList.add('open'); 
+        };
+        document.querySelector('.footer-nav a.disabled').addEventListener('click', e => e.preventDefault());
 
         const searchBtn = document.getElementById('searchBtn');
         const searchWrapper = document.getElementById('searchWrapper');
@@ -387,4 +266,3 @@
     </script>
 </body>
 </html>
-
