@@ -14,12 +14,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FWJSSV720R"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z8K6QT4J4X"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-FWJSSV720R');
+
+      gtag('config', 'G-Z8K6QT4J4X');
     </script>
     
     <style>
@@ -141,15 +142,6 @@
             .left-logo { top: 15px; left: 15px; }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FWJSSV720R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FWJSSV720R');
-</script>
 </head>
 <body>
 
@@ -226,7 +218,15 @@
             document.dispatchEvent(new CustomEvent('gamesRendered'));
         }
 
-        searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') displayResults(e.target.value); });
+        searchInput.addEventListener('keydown', e => { 
+            if (e.key === 'Enter') {
+                displayResults(e.target.value); 
+                // Analytics Event for Search
+                if (typeof gtag === 'function') {
+                    gtag('event', 'search', { search_term: e.target.value });
+                }
+            }
+        });
         searchInput.addEventListener('input', e => { if (e.target.value.trim() === "") displayResults(""); });
 
         const creditModal = document.getElementById('creditModal');
@@ -269,4 +269,3 @@
     </script>
 </body>
 </html>
-
