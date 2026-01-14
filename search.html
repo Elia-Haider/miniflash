@@ -13,6 +13,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FWJSSV720R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FWJSSV720R');
+    </script>
+    
     <style>
         :root {
             --brand-yellow: #ffde03;
@@ -32,7 +41,6 @@
                               linear-gradient(90deg, #00000008 2px, transparent 2px);
             background-size: 40px 40px; color: black; margin: 0;
             display: flex; flex-direction: column; align-items: center;
-            /* UPDATED: min-height wapas add kiya hai */
             min-height: 100vh;
             padding: 20px; overflow-x: hidden;
         }
@@ -40,7 +48,6 @@
         .container {
             width: 95%; max-width: 650px; display: flex; flex-direction: column;
             justify-content: center;
-            /* UPDATED: flex-grow ab hamesha 1 rahega */
             flex-grow: 1; 
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-bottom: 80px;
@@ -63,51 +70,26 @@
 
         .top-controls { position: fixed; top: 20px; right: 20px; z-index: 100; transition: opacity 0.3s ease-out; }
         .top-controls.hidden { opacity: 0; pointer-events: none; }
-        .info-btn {
-            width: 50px; height: 50px; background: white; border: var(--dark-border);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-family: 'Comic Neue', sans-serif; font-weight: bold; font-size: 2rem;
-            padding-bottom: 5px; color: black; box-shadow: var(--hard-shadow);
-            cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
-        }
+        .info-btn { width: 50px; height: 50px; background: white; border: var(--dark-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Comic Neue', sans-serif; font-weight: bold; font-size: 2rem; padding-bottom: 5px; color: black; box-shadow: var(--hard-shadow); cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
         .info-btn:hover { background: var(--brand-cyan); transform: translate(-2px, -2px); box-shadow: 8px 8px 0px black; }
         .info-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
 
-        /* JAB RESULTS ACTIVE HONGE, to container ab bhi stretch karega */
-        .container.results-active { 
-            justify-content: flex-start; /* Results ko upar se shuru karega */
-            margin-top: 30px; 
-            margin-bottom: 50px; 
-        }
+        .container.results-active { justify-content: flex-start; margin-top: 30px; margin-bottom: 50px; }
         .search-wrapper { position: relative; width: 100%; }
-        input {
-            width: 100%; padding: 20px 30px; font-size: 1.5rem;
-            font-family: 'Comic Neue', cursive; font-weight: 700;
-            border: var(--dark-border); border-radius: 50px; outline: none;
-            box-shadow: var(--hard-shadow); transition: all 0.2s;
-            background: white; text-align: center;
-        }
+        input { width: 100%; padding: 20px 30px; font-size: 1.5rem; font-family: 'Comic Neue', cursive; font-weight: 700; border: var(--dark-border); border-radius: 50px; outline: none; box-shadow: var(--hard-shadow); transition: all 0.2s; background: white; text-align: center; }
         input:focus { transform: translateY(4px); box-shadow: 2px 2px 0px black; background-color: var(--brand-yellow); text-align: left; padding-left: 30px; }
 
         .results { display: flex; flex-direction: column; gap: 25px; width: 100%; opacity: 0; height: 0; overflow: hidden; transition: all 0.5s ease; margin-top: 0; }
         .container.results-active .results { margin-top: 40px; opacity: 1; height: auto; overflow: visible; }
 
-        .game-card {
-            display: flex; align-items: center; background: white;
-            border: var(--dark-border); border-radius: 12px;
-            text-decoration: none; color: black; transition: all 0.2s ease;
-            box-shadow: var(--hard-shadow); position: relative; overflow: hidden;
-            transform: rotate(0deg); cursor: pointer;
-        }
+        .game-card { display: flex; align-items: center; background: white; border: var(--dark-border); border-radius: 12px; text-decoration: none; color: black; transition: all 0.2s ease; box-shadow: var(--hard-shadow); position: relative; overflow: hidden; transform: rotate(0deg); cursor: pointer; }
         .game-card:hover { z-index: 10; background-color: #fff9db; }
         .game-card:hover:nth-child(odd) { transform: translateY(-5px) rotate(-2deg); box-shadow: 8px 8px 0px black; }
         .game-card:hover:nth-child(even) { transform: translateY(-5px) rotate(2deg); box-shadow: 8px 8px 0px black; }
 
         .game-thumbnail { width: 160px; height: 90px; background: #eee; border-right: var(--dark-border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
         .game-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-        
         .ad_warn { position: absolute; top: 8px; right: 8px; background-color: var(--brand-pink); color: white; font-family: 'Bungee', cursive; font-size: 0.7rem; padding: 4px 8px; border-radius: 20px; border: 2px solid black; box-shadow: 2px 2px 0px black; z-index: 10; }
-
         .game-info { padding: 15px 25px; flex-grow: 1; }
         .game-info h3 { margin: 0; font-family: 'Bungee', cursive; font-size: 1.6rem; color: black; line-height: 1.2; }
         .game-info p { margin: 8px 0 0; font-size: 1.1rem; color: #333; font-weight: bold; }
@@ -137,7 +119,7 @@
         #skipAdBtn:hover { background: var(--brand-pink); color: white; transform: translateY(-3px); box-shadow: 10px 10px 0px black; }
         #skipAdBtn:disabled { background: #999; color: #ccc; cursor: not-allowed; transform: none; box-shadow: var(--hard-shadow); }
 
-        .site-footer { width: 100%; padding: 20px 0; margin-top: auto; /* IMPORTANT: Yeh footer ko neeche push karega */ text-align: center; border-top: 3px solid black; background-color: #ffffff99; flex-shrink: 0; }
+        .site-footer { width: 100%; padding: 20px 0; margin-top: auto; text-align: center; border-top: 3px solid black; background-color: #ffffff99; flex-shrink: 0; }
         .footer-nav { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
         .footer-nav a { font-family: 'Bungee', cursive; color: black; text-decoration: none; font-size: 1.1rem; transition: color 0.2s, transform 0.2s; }
         .footer-nav a:hover { color: var(--brand-pink); transform: translateY(-2px); }
@@ -159,15 +141,6 @@
             .left-logo { top: 15px; left: 15px; }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FWJSSV720R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FWJSSV720R');
-</script>
 </head>
 <body>
 
@@ -215,11 +188,10 @@
 
     <script src="ads.js"></script>
     <script>
-        // (JavaScript mein koi tabdeeli nahi hai, isliye wahi code hai)
         const gameData = [
             { title: "Flash Fingers", description: "Test your typing speed in this retro challenge.", path: "flashfingers/", image: "flashfingers/THM.jpg", external: false },
             { title: "Brain Fry", description: "High speed quiz. Think fast or get fried!", path: "brainfry/", image: "brainfry/THM.jpg", external: false },
-            { title: "Cool Math Games", description: "Check out this awesome external site for more games!", path: "coolmathgame", image: "coolmathgame/THM.jpg", external: false }
+            { title: "Cool Math Games", description: "Check out this awesome external site for more games!", path: "https://www.coolmathgames.com/", image: "https://i.ytimg.com/vi/kBGj43l_T3I/maxresdefault.jpg", external: true }
         ];
 
         const fuse = new Fuse(gameData, { keys: ["title", "description"], threshold: 0.4 });
@@ -238,7 +210,7 @@
             container.classList.add('results-active');
             
             if (results.length > 0) {
-                resultsList.innerHTML = results.map(game => `<div class="game-card" data-url="${game.path}"><div class="game-thumbnail"><img src="${game.image}" alt="${game.title}" ondragstart="return false;"></div><div class="game-info"><h3>${game.title}</h3><p>${game.description}</p></div></div>`).join('');
+                resultsList.innerHTML = results.map(game => `<div class="game-card" data-url="${game.path}" data-title="${game.title}"><div class="game-thumbnail"><img src="${game.image}" alt="${game.title}" ondragstart="return false;"></div><div class="game-info"><h3>${game.title}</h3><p>${game.description}</p></div></div>`).join('');
             } else {
                 resultsList.innerHTML = '<div class="no-results-msg">👾 NO GAMES FOUND!</div>';
             }
@@ -251,14 +223,24 @@
         const creditModal = document.getElementById('creditModal');
         const privacyModal = document.getElementById('privacyModal');
         
-        document.getElementById('infoBtn').onclick = () => creditModal.classList.add('open');
+        document.getElementById('infoBtn').onclick = () => {
+            if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'top_button' });
+            creditModal.classList.add('open');
+        };
         document.getElementById('closeCreditModal').onclick = () => creditModal.classList.remove('open');
         document.getElementById('closePrivacyModal').onclick = () => privacyModal.classList.remove('open');
         
-        document.getElementById('footerAboutBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
+        document.getElementById('footerAboutBtn').onclick = (e) => { 
+            e.preventDefault(); 
+            if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'footer_about' });
+            creditModal.classList.add('open'); 
+        };
         document.getElementById('footerPrivacyBtn').onclick = (e) => { e.preventDefault(); privacyModal.classList.add('open'); };
-        document.getElementById('footerContactBtn').onclick = (e) => { e.preventDefault(); creditModal.classList.add('open'); };
-        
+        document.getElementById('footerContactBtn').onclick = (e) => { 
+            e.preventDefault();
+            if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'footer_contact' });
+            creditModal.classList.add('open'); 
+        };
         document.querySelector('.footer-nav a.disabled').addEventListener('click', e => e.preventDefault());
 
         const emailLink = document.getElementById('emailLink');
@@ -278,4 +260,3 @@
     </script>
 </body>
 </html>
-
