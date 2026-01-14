@@ -8,7 +8,7 @@
     const useAdSense = false; 
 
     // NEW: Direct Ads ke liye alag se switch
-    const useDirectAds = true;
+    const useDirectAds = false;
 
     const adSenseLogic = () => `<div style="text-align: center; padding: 20px;"><h3>Advertisement</h3><p>(Google Ad would display here)</p></div>`;
 
@@ -175,4 +175,5 @@
     
     document.addEventListener('gamesRendered', initAdSystem);
 })();
+
 
