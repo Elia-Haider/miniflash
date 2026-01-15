@@ -45,7 +45,7 @@
             background-size: cover, 40px 40px, 40px 40px;
             background-attachment: fixed, scroll, scroll;
             color: black; margin: 0; display: flex; flex-direction: column;
-            align-items: center; min-height: 100vh; padding: 20px; overflow-x: hidden;
+            align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; overflow-x: hidden;
         }
         
         .container {
@@ -77,12 +77,12 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 999; }
         .modal-overlay.open { display: flex; }
 
-        .modal-box { background: white; border: var(--dark-border); box-shadow: 15px 15px 0px black; padding: 40px; width: 90%; max-width: 550px; text-align: center; position: relative; }
+        .modal-box { background: white; border: var(--dark-border); box-shadow: 15px 15px 0px black; padding: 40px; width: 90%; max-width: 550px; text-align: center; position: relative; box-sizing: border-box; }
         .modal-box h2 { font-family: 'Bungee', cursive; margin-top: 0; font-size: 2.5rem; color: var(--brand-pink); -webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px black; }
         .modal-box p { font-size: 1.1rem; line-height: 1.6; }
         
         .creator-name { font-size: 2rem; font-weight: bold; margin: 15px 0; background: var(--brand-yellow); border: 3px solid black; display: inline-block; padding: 10px 20px; transform: rotate(-3deg); box-shadow: 6px 6px 0px black; }
-        .close-modal { position: absolute; top: -20px; right: -20px; width: 50px; height: 50px; background: #ff0000; color: white; border: 4px solid black; font-family: 'Bungee', cursive; font-size: 1.5rem; cursor: pointer; box-shadow: 4px 4px 0px black; }
+        .close-modal { position: absolute; top: -20px; right: -20px; width: 50px; height: 50px; background: #ff0000; color: white; border: 4px solid black; font-family: 'Bungee', cursive; font-size: 1.5rem; cursor: pointer; box-shadow: 4px 4px 0px black; z-index: 10; }
 
         .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--brand-cyan); color: black; border: var(--dark-border); padding: 15px 30px; font-family: 'Bungee', cursive; font-size: 1.2rem; box-shadow: var(--hard-shadow); z-index: 2000; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
         .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -130,6 +130,21 @@
             .search-wrapper.visible { display: block; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
             @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
             input { font-size: 1.2rem; padding: 15px 25px; }
+
+            /* FIX: Modal responsiveness for mobile screens */
+            .modal-box {
+                padding: 40px 25px 25px 25px; /* Reduced padding for more content space */
+            }
+            .modal-box h2 {
+                font-size: 2rem; /* Adjusted title font size */
+            }
+            .close-modal {
+                top: 10px; /* Position inside the box */
+                right: 10px; /* Position inside the box */
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -169,7 +184,8 @@
 
     <footer class="site-footer">
         <nav class="footer-nav">
-            <a href="#" class="disabled" title="Coming Soon!">Home</a>
+            <!-- FIX: "Home" link is now enabled -->
+            <a href="#">Home</a>
             <a href="#" id="footerAboutBtn">About Us</a>
             <a href="#" id="footerPrivacyBtn">Privacy Policy</a>
             <a href="#" id="footerContactBtn">Contact</a>
@@ -241,7 +257,9 @@
             if(typeof gtag === 'function') gtag('event', 'info_click', { 'source': 'footer_contact' });
             creditModal.classList.add('open'); 
         };
-        document.querySelector('.footer-nav a.disabled').addEventListener('click', e => e.preventDefault());
+        
+        // FIX: Removed the JS preventing the disabled link from working
+        // document.querySelector('.footer-nav a.disabled').addEventListener('click', e => e.preventDefault());
 
         const searchBtn = document.getElementById('searchBtn');
         const searchWrapper = document.getElementById('searchWrapper');
